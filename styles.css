@@ -74,8 +74,8 @@ td{
 
 .nav-bar{
   background: black;
-  margin: 8px;
-  height: calc(100% - 16px);
+  margin: 16px;
+  height: calc(100% - 32px);
   display: flex;
   align-items: center;
   gap: 16px;
@@ -87,6 +87,28 @@ td{
 }
 
 .nav-item{
+  /* Color:var(--neongreen); */
+  color: black;
+  font-size:large;
+}
+
+.footer-container{
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+  height: calc(100% - 32px);
+  margin: 16px;
+}
+.footer-element{
+  Color:var(--neongreen);
+  font-size:large;
+}
+
+a{
+  text-decoration: none;
+}
+
+a:visited {
   Color:var(--neongreen);
   font-size:large;
 }
