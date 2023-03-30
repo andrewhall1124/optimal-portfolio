@@ -1,25 +1,48 @@
-const apikey = "QGWOX5A1IGEY8FV7";
-const symbol = "meta";
-const series = "TIME_SERIES_MONTHLY";
-const url = `https://www.alphavantage.co/query?function=${series}&symbol=${symbol}&apikey=${apikey}`;
-const closeArray = [];
+ function fetchData() {
+  const ticker = document.getElementById("ticker").value;
+  const apikey = "QGWOX5A1IGEY8FV7";
+  const series = "TIME_SERIES_MONTHLY";
+  const url = `https://www.alphavantage.co/query?function=${series}&symbol=${ticker}&apikey=${apikey}`;
 
-function getStockData (url, dataFunction){
   fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      console.log(data);
-      dataFunction(data);
+  .then((response) => response.json())
+  .then((data) => {
+
+    function roundToTwo(num) {
+      return +(Math.round(num + "e+2")  + "e-2");
+    }
+    
+    //parse all monthly close data for the last 5 years
+    const monthlyData = data['Monthly Time Series'];
+    const closeData = [];
+     for (let i = 0; i < 60; i++){
+      closeData[i] = parseFloat(Object.values(Object.values(monthlyData)[i])[3]);
+    }
+
+    //create an array with the average return of each month 
+    const returnData = [];
+    for (let i = 0; i < closeData.length; i++){
+      returnData[i] = closeData[i] / closeData[i-1];
+    }
+
+    returnData[0] = 0;
+
+    console.log(returnData);
+    
+    //find the average return of the last 5 years
+    const sum = returnData.reduce((accumulator, currentValue) => accumulator + currentValue);
+    const mean = roundToTwo(sum / returnData.length);
+
+    //calculate standard deviation of returns over the last 5 years
+    const variance = returnData.reduce((accumulator, currentValue) => accumulator + Math.pow(currentValue - mean, 2), 0) / closeData.length;
+    const standardDeviation = roundToTwo(Math.sqrt(variance));
+
+    console.log(mean);
+    console.log(standardDeviation);
+
+    const returnElement = document.getElementById("box-1.2");
+    const riskElement = document.getElementById("box-1.3");
+    returnElement.textContent = mean;
+    riskElement.textContent = standardDeviation;
   });
 }
-
-function getStockClose(data){
-  for(let i=0; i < 60; i++){
-    let close = Object.values(Object.values(data["Monthly Time Series"])[i])[3];
-    closeArray.unshift(close);
-  }
-}
-
-console.log(closeArray);
-
-getStockData(url, getStockClose);

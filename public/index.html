@@ -23,12 +23,15 @@
                 <th>Weight</th>
               </tr>
               <tr>
-                <td>META</td>
-                <td>7.2%</td>
-                <td>.3</td>
-                <td>.12</td>
+                <td><input type="text" id="ticker" oninput="fetchData()"></td>
+                <td id="box-1.2"></td>
+                <td id="box-1.3"></td>
+                <td id="box-1.4"></td>
               </tr>
             </table>
+          </div>
+          <div class="button-container">
+            <input type = "Submit" value="Optimize" onclick="optimizePortfolio()">
           </div>
       </div>
       <div class="graph-container">
@@ -43,4 +46,5 @@
     </footer>
   </body>
   <script src="main.js"></script>
+
 </html>
