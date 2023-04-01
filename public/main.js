@@ -1,5 +1,5 @@
- function fetchData() {
-  const ticker = document.getElementById("ticker").value;
+ function fetchData(elementId) {
+  const ticker = document.getElementById(elementId).value;
   const apikey = "QGWOX5A1IGEY8FV7";
   const series = "TIME_SERIES_MONTHLY";
   const url = `https://www.alphavantage.co/query?function=${series}&symbol=${ticker}&apikey=${apikey}`;
@@ -9,16 +9,19 @@
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-
       function roundToTwo(num) {
         return +(Math.round(num + "e+2")  + "e-2");
       }
       
-      //parse all monthly close data for the last 5 years
+      //parse all monthly close data
       const monthlyData = data['Monthly Time Series'];
       const closeData = [];
-      for (let i = 0; i < 60; i++){
-        closeData[i] = parseFloat(Object.values(Object.values(monthlyData)[i])[3]);
+      if(data['Note'] != 'Thank you for using Alpha Vantage! Our standard API call frequency is 5 calls per minute and 500 calls per day. Please visit https://www.alphavantage.co/premium/ if you would like to target a higher API call frequency.'){
+        for (let i = 0; i < (Object.keys(monthlyData)).length; i++){
+            closeData[i] = Number(Object.values(Object.values(monthlyData)[i])[3])
+        }
+      } else{
+        alert('You have reached the api limit. Please wait one minute before adding more stocks!');
       }
 
       //create an array with the average return of each month 
@@ -29,7 +32,7 @@
 
       returnData[0] = 0;
 
-      console.log(returnData);
+      // console.log(returnData);
       
       //find the average return of the last 5 years
       const sum = returnData.reduce((accumulator, currentValue) => accumulator + currentValue);
@@ -42,8 +45,8 @@
       console.log(mean);
       console.log(standardDeviation);
 
-      const returnElement = document.getElementById("box-1.2");
-      const riskElement = document.getElementById("box-1.3");
+      const returnElement = document.getElementById(elementId + '.2');
+      const riskElement = document.getElementById(elementId + '.3');
       returnElement.textContent = mean;
       riskElement.textContent = standardDeviation;
     });
