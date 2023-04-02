@@ -1,18 +1,21 @@
- function fetchData() {
-  const ticker = [];
-  for(let j = 0; j < 3; j++){
-    ticker[j] = document.getElementById(`ticker-${j+1}.1`);
-  }
+function fetchData() {
+  for(let i = 1; i < 4; i++){
+    const tickerId = 'ticker-' + i;
+    const returnId = 'return-' +i;
+    const riskId = 'risk-' + i;
+    const ticker = document.getElementById(tickerId).value;
 
-  for(let j = 0; j < 3; j++){
-    if(ticker[j]){
+    if(ticker){
+
       const apikey = "QGWOX5A1IGEY8FV7";
       const series = "TIME_SERIES_MONTHLY";
-      const url = `https://www.alphavantage.co/query?function=${series}&symbol=${ticker[j]}&apikey=${apikey}`;
+      const url = `https://www.alphavantage.co/query?function=${series}&symbol=${ticker}&apikey=${apikey}`;
+
       fetch(url)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+
         function roundToTwo(num) {
           return +(Math.round(num + "e+2")  + "e-2");
         }
@@ -33,10 +36,7 @@
         for (let i = 0; i < closeData.length; i++){
           returnData[i] = closeData[i] / closeData[i-1];
         }
-
         returnData[0] = 0;
-
-        // console.log(returnData);
         
         //find the average return of the last 5 years
         const sum = returnData.reduce((accumulator, currentValue) => accumulator + currentValue);
@@ -46,14 +46,13 @@
         const variance = returnData.reduce((accumulator, currentValue) => accumulator + Math.pow(currentValue - mean, 2), 0) / closeData.length;
         const standardDeviation = roundToTwo(Math.sqrt(variance));
 
-        console.log(mean);
-        console.log(standardDeviation);
+        //output return and standard deviation
 
-        const returnElement = document.getElementById(`ticker-${j+1}.2`);
-        const riskElement = document.getElementById(`ticker-${j+1}.3`);
+        const returnElement = document.getElementById(returnId);
+        const riskElement = document.getElementById(riskId);
         returnElement.textContent = mean;
         riskElement.textContent = standardDeviation;
       });
     }
   }
-}
+ }
