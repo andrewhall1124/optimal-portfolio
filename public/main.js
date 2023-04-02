@@ -17,7 +17,7 @@ function fetchData() {
         console.log(data);
 
         function roundToTwo(num) {
-          return +(Math.round(num + "e+2")  + "e-2");
+          return +(Math.round(num + "e+3")  + "e-3");
         }
         
         //parse all monthly close data
@@ -34,7 +34,7 @@ function fetchData() {
         //create an array with the average return of each month 
         const returnData = [];
         for (let i = 0; i < closeData.length; i++){
-          returnData[i] = closeData[i] / closeData[i-1];
+          returnData[i] = (closeData[i] / closeData[i-1]) -1;
         }
         returnData[0] = 0;
         
@@ -47,7 +47,6 @@ function fetchData() {
         const standardDeviation = roundToTwo(Math.sqrt(variance));
 
         //output return and standard deviation
-
         const returnElement = document.getElementById(returnId);
         const riskElement = document.getElementById(riskId);
         returnElement.textContent = mean;

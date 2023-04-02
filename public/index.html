@@ -14,6 +14,23 @@
     </header>
     <main>
       <div class="stats-container">
+        <div class ='portfolio-container'>
+          <table>
+            <tr>
+              <th colspan="2">
+                Portfolio
+              </th>
+            </tr>
+            <tr>
+              <th>E[r]</th>
+              <th>SD</th>
+            </tr>
+            <tr>
+              <td>.08</td>
+              <td>.08</td>
+            </tr>
+          </table>
+        </div>
         <div class="table-container">
             <table>
               <tr>
@@ -23,28 +40,28 @@
                 <th>Weight</th>
               </tr>
               <tr>
-                <td><input type="text" id="ticker-1"></td>
+                <td><input class="width" type="text" id="ticker-1"></td>
                 <td id="return-1"></td>
                 <td id="risk-1"></td>
-                <td><input type="text" id="weight-1"></td>
+                <td><input class="width" type="text" id="weight-1"></td>
               </tr>
               <tr>
-                <td><input type="text" id="ticker-2"></td>
+                <td><input class="width" type="text" id="ticker-2"></td>
                 <td id="return-2"></td>
                 <td id="risk-2"></td>
-                <td><input type="text" id="weight-2"></td>
+                <td><input class="width" type="text" id="weight-2"></td>
               </tr>
               <tr>
-                <td><input type="text" id="ticker-3"></td>
+                <td><input class="width" type="text" id="ticker-3"></td>
                 <td id="return-3"></td>
                 <td id="risk-3"></td>
-                <td><input type="text" id="weight-3"></td>
+                <td><input class="width" type="text" id="weight-3"></td>
               </tr>
               <tr>
             </table>
           </div>
           <div class="button-container">
-            <input type = "Submit" value="Submit" onclick="fetchData()">
+            <input class='submit-button' type = "Submit" value="Submit" onclick="fetchData()">
           </div>
       </div>
       <div class="graph-container">

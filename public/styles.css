@@ -35,15 +35,32 @@ footer{
   align-items: center;
 }
 
+.portfolio-container{
+  background: lightgray;
+  height: calc(50% - 8px);
+  width:calc(100% - 16px);
+  margin: 8px 8px 0 8px;
+}
+
 .table-container{
   background: white;
   border: solid thin lightgray;
-  height: calc(90% - 8px);
+  height: calc(24% - 8px);
   width:calc(100% - 16px);
   margin: 8px 8px 0 8px;
   overflow: auto;
   display: flex;
   flex-direction: column;
+}
+
+.button-container{
+  background: lightgray;
+  height: calc(20% - 8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width:calc(100% - 16px);
 }
 
 table{
@@ -64,17 +81,14 @@ td{
   border:solid thin lightgray;
 }
 
-.button-container{
-  background: lightgray;
-  height: calc(10% - 8px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width:calc(100% - 16px);
+.width {
+  width: 75%;
 }
-input{
+
+.submit-button{
   width:calc(75%);
+  height: 75%;
+  font-size: large;
 }
 
 
