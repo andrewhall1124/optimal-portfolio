@@ -17,7 +17,7 @@ function fetchData() {
         console.log(data);
 
         function roundToTwo(num) {
-          return +(Math.round(num + "e+3")  + "e-3");
+          return +(Math.round(num + "e+4")  + "e-4");
         }
         
         //parse all monthly close data
