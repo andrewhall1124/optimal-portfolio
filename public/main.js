@@ -3,6 +3,7 @@ function fetchData() {
     const tickerId = 'ticker-' + i;
     const returnId = 'return-' +i;
     const riskId = 'risk-' + i;
+    const weightNameId = 'weight-name-' + i;
     const ticker = document.getElementById(tickerId).value;
 
     if(ticker){
@@ -49,8 +50,10 @@ function fetchData() {
         //output return and standard deviation
         const returnElement = document.getElementById(returnId);
         const riskElement = document.getElementById(riskId);
+        const weightNameElement = document.getElementById(weightNameId);
         returnElement.textContent = mean;
         riskElement.textContent = standardDeviation;
+        weightNameElement.textContent = ticker;
       });
     }
   }
