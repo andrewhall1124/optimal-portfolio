@@ -130,6 +130,29 @@ td{
   color: var(--neongreen);
 }
 
+.about-container{
+  background: lightgray;
+  height: calc(100% - 16px);
+  margin:8px 0px 8px; 
+  border-radius: 15px;
+  flex: 1;
+}
+
+.about-text-container{
+  background: white;
+  height: calc(100% - 16px);
+  margin: 8px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-text{
+  margin: 16px;
+font-size:large
+}
+
 
 .graph-container{
   background: lightgray;
@@ -194,6 +217,7 @@ td{
 
 a{
   text-decoration: none;
+  color: var(--darkneongreen);
 }
 
 a:visited {
