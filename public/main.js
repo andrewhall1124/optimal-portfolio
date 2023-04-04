@@ -58,3 +58,13 @@ function fetchData() {
     }
   }
  }
+
+ function calculateData(){
+  const portfolioReturnEl = document.getElementById('portfolio-return');
+  const portfolioRiskEl = document.getElementById('portfolio-risk');
+  const portfolioSharpeEl = document.getElementById('portfolio-sharpe');
+
+  //calculate portfolio expected return
+  
+
+ }
