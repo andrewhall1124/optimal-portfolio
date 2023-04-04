@@ -15,7 +15,6 @@ function fetchData() {
       fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
 
         function roundToTwo(num) {
           return +(Math.round(num + "e+4")  + "e-4");
@@ -61,10 +60,24 @@ function fetchData() {
 
  function calculateData(){
   const portfolioReturnEl = document.getElementById('portfolio-return');
-  const portfolioRiskEl = document.getElementById('portfolio-risk');
-  const portfolioSharpeEl = document.getElementById('portfolio-sharpe');
+  // const portfolioRiskEl = document.getElementById('portfolio-risk');
+  // const portfolioSharpeEl = document.getElementById('portfolio-sharpe');
+
+  function roundToTwo(num) {
+    return +(Math.round(num + "e+4")  + "e-4");
+  }
 
   //calculate portfolio expected return
-  
+  let sumProduct = 0;
+  for(let i = 1; i < 4; i++){
+    const returnElement = document.getElementById('return-' +i);
+    const weightElement = document.getElementById('weight-' +i);
+    const returnValue = returnElement.textContent;
+    const weightValue = weightElement.value;
+    console.log(returnValue);
+    console.log(weightValue);
 
+    sumProduct += returnValue * weightValue;
+  }
+  portfolioReturnEl.textContent = roundToTwo(sumProduct);
  }
