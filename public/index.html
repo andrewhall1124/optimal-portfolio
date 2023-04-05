@@ -1,110 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Optimal-Portfolio</title>
+    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="login.css" />
   </head>
   <body>
     <header>
-      <div class="nav-bar">
-        <div class="logo-container">
-          <div class="logo">
-            <a href=index.html>Optimal-Portfolio</a>
-          </div>
-        </div>
-        <div class="nav-item">
-          <a href=about.html>About</a>
-        </div>
-      </div>
+      <nav>
+        <a href="#">Optimal-Portfolio</a>
+        <menu>
+          <li>
+            <a href="index.html">Home</a>
+          </li>
+        </menu>
+      </nav>
     </header>
     <main>
-      <div class="stats-container">
-        <div class="inner-stats-container">
-          <div class="stocks-container">
-            <table>
-              <tr>
-                <th colspan="3">Stocks</th>
-              </tr>
-              <tr>
-                <th>Ticker</th>
-                <th>E[r]</th>
-                <th>SD</th>
-              </tr>
-              <tr>
-                <td><input class="width" type="text" id="ticker-1"></td>
-                <td id="return-1"></td>
-                <td id="risk-1"></td>
-              </tr>
-              <tr>
-                <td><input class="width" type="text" id="ticker-2"></td>
-                <td id="return-2"></td>
-                <td id="risk-2"></td>
-              </tr>
-              <tr>
-                <td><input class="width" type="text" id="ticker-3"></td>
-                <td id="return-3"></td>
-                <td id="risk-3"></td>
-              </tr>
-              <tr>
-            </table>
+      <div>
+        <h1>Welcome to Optimal-Portfolio</h1>
+        <!-- Displayed when needing authentication -->
+        <div id="loginControls" style="display: none">
+          <div>
+            <span>@</span>
+            <input
+              type="text"
+              id="userName"
+              placeholder="your@email.com"
+            />
           </div>
-          <div class="button-container-1">
-            <input class='submit-button' type = "Submit" value="Fetch" onclick="fetchData()">
+          <div>
+            <span>🔒</span>
+            <input
+              class="form-control"
+              type="password"
+              id="userPassword"
+              placeholder="password"
+            />
           </div>
+          <button type="button" onclick="loginUser()">
+            Login
+          </button>
+          <button type="button" onclick="createUser()">
+            Create
+          </button>
         </div>
-        <div class="inner-stats-container">
-          <div class ='weights-container'>
-            <table>
-              <tr>
-                <th colspan="2">Weights</th>
-              </tr>
-              <tr>
-                <th>Ticker</th>
-                <!-- <th>Alpha</th> -->
-                <th>Weight</th>
-              </tr>
-              <tr>
-                <td id = "weight-name-1"></td>
-                <!-- <td></td> -->
-                <td><input class="width" type="text" id="weight-1" value=".3333"></td>
-              </tr>
-              <tr>
-                <td id = "weight-name-2"></td>
-                <!-- <td></td> -->
-                <td><input class="width" type="text" id="weight-2" value=".3333"></td>
-              </tr>
-              <tr>
-                <td id = "weight-name-3"></td>
-                <!-- <td></td> -->
-                <td><input class="width" type="text" id="weight-3" value=".3333"></td>
-              </tr>
-            </table>
-          </div>
-          <div class="portfolio-container">
-            <table>
-              <tr>
-                <th colspan="2">Portfolio</th>
-              </tr>
-              <tr>
-                <td>E[r]</td>
-                <td id="portfolio-return"></td>
-              </tr>
-              <!-- <tr>
-                <td>SD</td>
-                <td id="portfolio-risk"></td>
-              </tr>
-              <tr>
-                <td>Sharpe</td>
-                <td id="portfolio-sharpe"></td> -->
-              </tr>
-            </table>
-          </div>
-          <div class="button-container-2">
-          <input class='submit-button' type = "Submit" value="Calculate" onclick="calculateData()">
-          </div>
+        <!-- Displayed when ready to play -->
+        <div id="playControls" style="display: none">
+          <div id="playerName"></div>
+          <button type="button" onclick="play()">
+            Play
+          </button>
+          <button type="button" onclick="logout()">
+            Logout
+          </button>
         </div>
       </div>
-      <div class="graph-container">
-        <div class="graph">A graph will go here for the react deliverable</div>
+      <!-- Error dialog -->
+      <div id="msgModal" tabindex="-1">
+        <div>
+          <div>
+            <div>error message here</div>
+            <div>
+              <button
+                type="button"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
     <footer>
@@ -113,7 +81,6 @@
         <div class="footer-element"><a href="https://github.com/andrewhall1124/optimal-portfolio" target="_blank">Github</a></div>
       </div>
     </footer>
+    <script src="login.js"></script>
   </body>
-  <script src="main.js"></script>
-
 </html>
