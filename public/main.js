@@ -1,3 +1,10 @@
+const playerNameEl = document.querySelector('.player-name');
+playerNameEl.textContent = getPlayerName();
+
+function getPlayerName() {
+  return localStorage.getItem('userName') ?? 'Mystery player';
+}
+
 function fetchData() {
   for(let i = 1; i < 4; i++){
     const tickerId = 'ticker-' + i;
@@ -80,5 +87,38 @@ function fetchData() {
     sumProduct += returnValue * weightValue;
   }
   portfolioReturnEl.textContent = roundToTwo(sumProduct);
-  
- }
+
+  // Adjust the webSocket protocol to what is being used for HTTP
+  const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+  const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+
+  // Display that we have opened the webSocket
+  // socket.onopen = (event) => {
+  //   appendMsg('system', 'websocket', 'connected');
+  // };
+
+  // Display messages we receive from our friends
+  socket.onmessage = async (event) => {
+    const text = await event.data.text();
+    const chat = JSON.parse(text);
+    appendMsg('friend', chat.name, chat.msg);
+  };
+
+  // Send a message over the webSocket
+  function sendMessage() {
+    const msg = " created a portfolio";
+    const name = document.querySelector('.player-name').textContent;
+    appendMsg(name, msg);
+    socket.send(`{"name":"${name}", "msg":"${msg}"}`);
+  }
+
+  // Create one long list of messages
+  function appendMsg( from, msg) {
+    const chatText = document.querySelector('#player-messages');
+    chatText.innerHTML =
+      `<div>${from}: ${msg}</div>` +
+      chatText.innerHTML;
+  }
+
+  sendMessage();
+}

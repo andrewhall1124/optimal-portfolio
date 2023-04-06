@@ -311,10 +311,14 @@ a:visited {
 
 .player-messages-container{
   background: white;
-  margin: 8px 0 0 0;
+  margin: 8px 0 8px 0;
   border-radius: 15px;
-  height: 3em;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
+}
+
+.player-name{
+  display: none;
 }
