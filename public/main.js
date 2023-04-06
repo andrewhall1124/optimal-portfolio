@@ -80,4 +80,5 @@ function fetchData() {
     sumProduct += returnValue * weightValue;
   }
   portfolioReturnEl.textContent = roundToTwo(sumProduct);
+  
  }
