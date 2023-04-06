@@ -88,9 +88,7 @@ function fetchData() {
   }
   portfolioReturnEl.textContent = roundToTwo(sumProduct);
 
-  // Adjust the webSocket protocol to what is being used for HTTP
-  const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-  const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+
 
   // Display that we have opened the webSocket
   // socket.onopen = (event) => {
