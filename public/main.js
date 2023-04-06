@@ -101,7 +101,7 @@ function fetchData() {
   socket.onmessage = async (event) => {
     const text = await event.data.text();
     const chat = JSON.parse(text);
-    appendMsg('friend', chat.name, chat.msg);
+    appendMsg( chat.name, chat.msg);
   };
 
   // Send a message over the webSocket
