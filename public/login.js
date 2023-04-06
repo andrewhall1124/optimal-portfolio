@@ -11,9 +11,9 @@
   if (authenticated) {
     document.querySelector('#playerName').textContent = userName;
     setDisplay('loginControls', 'none');
-    setDisplay('playControls', 'block');
+    setDisplay('playControls', 'flex');
   } else {
-    setDisplay('loginControls', 'block');
+    setDisplay('loginControls', 'flex');
     setDisplay('playControls', 'none');
   }
 })();
@@ -50,7 +50,7 @@ async function loginOrCreate(endpoint) {
 }
 
 function play() {
-  window.location.href = 'play.html';
+  window.location.href = 'portfolio.html';
 }
 
 function logout() {

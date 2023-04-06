@@ -86,8 +86,8 @@ footer{
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  border-radius: 0 0 15px 15px;
+  width:100%;
+  border-radius:15px;
 }
 
 table{
@@ -152,7 +152,6 @@ td{
   margin: 16px;
 font-size:large
 }
-
 
 .graph-container{
   background: lightgray;
@@ -223,4 +222,89 @@ a{
 a:visited {
   Color:var(--darkneongreen);
   font-size:large;
+}
+
+.login-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .5em;
+}
+
+.welcome-text{
+  font-size: 2em;
+}
+
+.logo-color{
+  color:var(--darkneongreen);
+}
+
+.login-input-container{
+  flex-direction: column;
+  gap: .5em;
+}
+
+.login-input{
+  height: 1.5em;
+  font-size: 1em;
+  border-radius: 15px;
+}
+
+.login-button-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: .5em;
+  width: 100%;
+}
+
+.login-button{
+  font-size: 1em;
+  height: 1.5em;
+  width: calc(50% - .25em);
+  background: var(--neongreen);
+  border: none;
+  border-radius: 15px;
+  color: var(--darkneongreen);
+}
+
+.login-button:hover{
+  background: var(--darkneongreen);
+  color: var(--neongreen);
+}
+
+#playerName {
+  color: var(--darkneongreen);
+  font-size: 1.5em;
+}
+
+.play-controls-container{
+  flex-direction: column;
+  gap: .5em;
+  width: 100%;
+  align-items: center;
+}
+
+.play-button-container{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  gap: .5em;
+}
+
+.play-button{
+  font-size: 1em;
+  height: 1.5em;
+  width: calc(25% - .25em);
+  background: var(--neongreen);
+  border: none;
+  border-radius: 15px;
+  color: var(--darkneongreen);
+}
+
+.play-button:hover{
+  background: var(--darkneongreen);
+  color: var(--neongreen);
 }
