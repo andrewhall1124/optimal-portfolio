@@ -114,9 +114,9 @@ function fetchData() {
 
   // Create one long list of messages
   function appendMsg( from, msg) {
-    const chatText = document.querySelector('#player-messages');
+    const chatText = document.querySelector('#messages');
     chatText.innerHTML =
-      `<div>${from}: ${msg}</div>` +
+      `<div class="message-data">${from}: ${msg}</div>` +
       chatText.innerHTML;
   }
 
