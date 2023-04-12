@@ -1,7 +1,37 @@
-const playerNameEl = document.querySelector('.player-name');
-playerNameEl.textContent = getPlayerName();
+const playerNameEl = document.querySelector('.user-name');
+playerNameEl.textContent = getUserName();
 
-function getPlayerName() {
+// Adjust the webSocket protocol to what is being used for HTTP
+const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+
+// Display that we have opened the webSocket
+// socket.onopen = (event) => {
+//   appendMsg('system', 'websocket', 'connected');
+// };
+
+// Display messages we receive from our friends
+socket.onmessage = async (event) => {
+  const text = await event.data.text();
+  const chat = JSON.parse(text);
+  appendMsg( chat.name, chat.msg);
+};
+
+// Send a message over the webSocket
+function sendMessage() {
+  const msg = " created a portfolio";
+  const name = document.querySelector('.user-name').textContent;
+  socket.send(`{"name":"${name}", "msg":"${msg}"}`);
+}
+
+// Create one long list of messages
+function appendMsg( from, msg) {
+  const chatText = document.querySelector('#messages');
+  chatText.innerHTML =
+    `<div class="message-data">${from}: ${msg}</div>` + chatText.innerHTML;
+}
+
+function getUserName() {
   return localStorage.getItem('userName') ?? 'Mystery player';
 }
 
@@ -81,44 +111,10 @@ function fetchData() {
     const weightElement = document.getElementById('weight-' +i);
     const returnValue = returnElement.textContent;
     const weightValue = weightElement.value;
-    console.log(returnValue);
-    console.log(weightValue);
 
     sumProduct += returnValue * weightValue;
   }
   portfolioReturnEl.textContent = roundToTwo(sumProduct);
-
-  // Adjust the webSocket protocol to what is being used for HTTP
-  const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-  const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
-
-  // Display that we have opened the webSocket
-  // socket.onopen = (event) => {
-  //   appendMsg('system', 'websocket', 'connected');
-  // };
-
-  // Display messages we receive from our friends
-  socket.onmessage = async (event) => {
-    const text = await event.data.text();
-    const chat = JSON.parse(text);
-    appendMsg( chat.name, chat.msg);
-  };
-
-  // Send a message over the webSocket
-  function sendMessage() {
-    const msg = " created a portfolio";
-    const name = document.querySelector('.player-name').textContent;
-    appendMsg(name, msg);
-    socket.send(`{"name":"${name}", "msg":"${msg}"}`);
-  }
-
-  // Create one long list of messages
-  function appendMsg( from, msg) {
-    const chatText = document.querySelector('#messages');
-    chatText.innerHTML =
-      `<div class="message-data">${from}: ${msg}</div>` +
-      chatText.innerHTML;
-  }
 
   sendMessage();
 }
