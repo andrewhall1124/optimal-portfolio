@@ -1,6 +1,9 @@
 :root{
   --neongreen: #39FF14;
   --darkneongreen: rgb(0, 132, 0);
+  --neonred: #ff5858;
+  --darkneonred:#c20303; 
+
 }
 body{
   height: calc(100vh - 16px);
@@ -354,6 +357,14 @@ align-items: center;
 justify-content: space-around;
 }
 
+#button-row{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border: none;
+  width: 100%;
+}
+
 .add-row-button{
   aspect-ratio: 1 / 1;
   height: 75%;
@@ -362,9 +373,31 @@ justify-content: space-around;
   color: var(--darkneongreen);
   font-size: 100%;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.minus-row-button{
+  aspect-ratio: 1 / 1;
+  height: 75%;
+  background: var(--neonred);
+  border: none;
+  color: var(--darkneonred);
+  font-size: 100%;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .add-row-button:hover{
   background: var(--darkneongreen);
   color: var(--neongreen);
 }
+
+.minus-row-button:hover{
+  background: var(--darkneonred);
+  color: var(--neonred);
+}
+
