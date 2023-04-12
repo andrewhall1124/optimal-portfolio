@@ -64,20 +64,15 @@
         </div>
       </div>
       <!-- Error dialog -->
-      <!-- <div id="msgModal" tabindex="-1">
-        <div>
-          <div>
-            <div>error message here</div>
-            <div>
-              <button
-                type="button"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-            </div>
+      <div id="msgModal" style="display: none">
+        <div class="modal-body">error message here</div>
+          <div class = "login-button-container">
+            <button
+              type="button" onclick = "closeModal()" class="login-button"
+            >
+              Close
+            </button>
           </div>
-        </div> -->
       </div>
     </main>
     <footer>

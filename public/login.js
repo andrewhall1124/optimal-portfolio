@@ -44,8 +44,7 @@ async function loginOrCreate(endpoint) {
   } else {
     const modalEl = document.querySelector('#msgModal');
     modalEl.querySelector('.modal-body').textContent = `⚠ Error: ${body.msg}`;
-    const msgModal = new bootstrap.Modal(modalEl, {});
-    msgModal.show();
+    modalEl.style.display = "flex";
   }
 }
 
@@ -75,4 +74,9 @@ function setDisplay(controlId, display) {
   if (playControlEl) {
     playControlEl.style.display = display;
   }
+}
+
+function closeModal() {
+  const modalEl = document.querySelector('#msgModal');
+  modalEl.style.display = "none";
 }
