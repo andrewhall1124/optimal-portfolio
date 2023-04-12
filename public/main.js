@@ -2,6 +2,7 @@ const playerNameEl = document.querySelector('.user-name');
 playerNameEl.textContent = getUserName();
 
 const stocksTable = document.querySelector("#stocks-table");
+const weightTable = document.querySelector("#weights-table");
 
 // Adjust the webSocket protocol to what is being used for HTTP
 const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
@@ -143,9 +144,6 @@ function addNewRow(){
   // Insert the row before the last row
   stocksTable.insertBefore(newStockRow, addRow);
 
-  // Get the table element
-  const weightTable = document.querySelector("#weights-table");
-
   // Create a new row element
   const newWeightRow = document.createElement("tr");
 
@@ -167,8 +165,10 @@ function addNewRow(){
 }
 
 function deleteLastRow(){
-  const rows = stocksTable.rows;
-  if (rows.length > 2) {
-    stocksTable.deleteRow(rows.length - 1);
+  const stockRows = stocksTable.rows;
+  const weightRows = weightTable.rows;
+  if (stockRows.length > 4) {
+    stocksTable.deleteRow(stockRows.length - 1);
+    weightTable.deleteRow(weightRows.length -1)
   }
 }
