@@ -33,7 +33,7 @@ function getUserName() {
 }
 
 function fetchData() {
-  for(let i = 1; i < stocksTable.rows.length-3; i++){
+  for(let i = 1; i < stocksTable.rows.length-2; i++){
     const tickerId = 'ticker-' + i;
     const returnId = 'return-' +i;
     const riskId = 'risk-' + i;
@@ -103,11 +103,11 @@ function fetchData() {
 
   //calculate portfolio expected return
   let sumProduct = 0;
-  for(let i = 1; i < 4; i++){
+  for(let i = 1; i < stocksTable.rows.length-2; i++){
     const returnElement = document.getElementById('return-' +i);
     const weightElement = document.getElementById('weight-' +i);
-    const returnValue = returnElement.textContent;
-    const weightValue = weightElement.value;
+    const returnValue = (returnElement.textContent);
+    const weightValue = (weightElement.value);
 
     sumProduct += returnValue * weightValue;
   }
@@ -129,15 +129,15 @@ function addNewRow(){
   const tickerInput = document.createElement("input");
   tickerInput.setAttribute("class", "width");
   tickerInput.setAttribute("type", "text");
-  tickerInput.setAttribute("id", "ticker-" + (stocksTable.rows.length - 3));
+  tickerInput.setAttribute("id", "ticker-" + (stocksTable.rows.length - 2));
   tickerCell.appendChild(tickerInput);
   newStockRow.appendChild(tickerCell);
 
   const returnCell = document.createElement("td");
-  returnCell.setAttribute("id", "return-" + (stocksTable.rows.length - 3));
+  returnCell.setAttribute("id", "return-" + (stocksTable.rows.length - 2));
   newStockRow.appendChild(returnCell);
   const riskCell = document.createElement("td");
-  riskCell.setAttribute("id", "risk-" + (stocksTable.rows.length - 3));
+  riskCell.setAttribute("id", "risk-" + (stocksTable.rows.length - 2));
   newStockRow.appendChild(riskCell);
 
   // Insert the row before the last row
@@ -155,14 +155,20 @@ function addNewRow(){
   newWeightRow.appendChild(tickerCell2);
 
   const weightCell = document.createElement("td");
-  weightCell.setAttribute("id", "weight-" + (weightTable.rows.length - 1));
   const weightInput = document.createElement("input");
   weightInput.setAttribute("class", "width");
   weightInput.setAttribute("type", "text");
+  weightInput.setAttribute("id", "weight-" + (weightTable.rows.length - 1));
   weightCell.appendChild(weightInput);
   newWeightRow.appendChild(weightCell);
 
   // Insert the row before the last row
   weightTable.append(newWeightRow);
+}
 
+function deleteLastRow(){
+  const rows = stocksTable.rows;
+  if (rows.length > 2) {
+    stocksTable.deleteRow(rows.length - 1);
+  }
 }
