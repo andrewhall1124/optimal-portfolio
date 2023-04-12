@@ -353,3 +353,18 @@ flex-direction: column;
 align-items: center;
 justify-content: space-around;
 }
+
+.add-row-button{
+  aspect-ratio: 1 / 1;
+  height: 75%;
+  background: var(--neongreen);
+  border: none;
+  color: var(--darkneongreen);
+  font-size: 100%;
+  border-radius: 5px;
+}
+
+.add-row-button:hover{
+  background: var(--darkneongreen);
+  color: var(--neongreen);
+}

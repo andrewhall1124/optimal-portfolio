@@ -26,7 +26,7 @@
       <div class="stats-container">
         <div class="inner-stats-container">
           <div class="stocks-container">
-            <table>
+            <table id="stocks-table">
               <tr>
                 <th colspan="3">Stocks</th>
               </tr>
@@ -41,14 +41,9 @@
                 <td id="risk-1"></td>
               </tr>
               <tr>
-                <td><input class="width" type="text" id="ticker-2"></td>
-                <td id="return-2"></td>
-                <td id="risk-2"></td>
-              </tr>
-              <tr>
-                <td><input class="width" type="text" id="ticker-3"></td>
-                <td id="return-3"></td>
-                <td id="risk-3"></td>
+                <td id="button-row">
+                  <input type="submit" class="add-row-button" value="+" onclick="addNewRow()"></input>
+                </td>
               </tr>
               <tr>
             </table>
@@ -59,7 +54,7 @@
         </div>
         <div class="inner-stats-container">
           <div class ='weights-container'>
-            <table>
+            <table id="weights-table">
               <tr>
                 <th colspan="2">Weights</th>
               </tr>
@@ -71,18 +66,8 @@
               <tr>
                 <td id = "weight-name-1"></td>
                 <!-- <td></td> -->
-                <td><input class="width" type="text" id="weight-1" value=".3333"></td>
-              </tr>
-              <tr>
-                <td id = "weight-name-2"></td>
-                <!-- <td></td> -->
-                <td><input class="width" type="text" id="weight-2" value=".3333"></td>
-              </tr>
-              <tr>
-                <td id = "weight-name-3"></td>
-                <!-- <td></td> -->
-                <td><input class="width" type="text" id="weight-3" value=".3333"></td>
-              </tr>
+                <td><input class="width" type="text" id="weight-1"></td>
+              </tr> 
             </table>
           </div>
           <div class="portfolio-container">

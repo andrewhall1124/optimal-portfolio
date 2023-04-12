@@ -1,14 +1,11 @@
 const playerNameEl = document.querySelector('.user-name');
 playerNameEl.textContent = getUserName();
 
+const stocksTable = document.querySelector("#stocks-table");
+
 // Adjust the webSocket protocol to what is being used for HTTP
 const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
 const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
-
-// Display that we have opened the webSocket
-// socket.onopen = (event) => {
-//   appendMsg('system', 'websocket', 'connected');
-// };
 
 // Display messages we receive from our friends
 socket.onmessage = async (event) => {
@@ -36,7 +33,7 @@ function getUserName() {
 }
 
 function fetchData() {
-  for(let i = 1; i < 4; i++){
+  for(let i = 1; i < stocksTable.rows.length-3; i++){
     const tickerId = 'ticker-' + i;
     const returnId = 'return-' +i;
     const riskId = 'risk-' + i;
@@ -117,4 +114,55 @@ function fetchData() {
   portfolioReturnEl.textContent = roundToTwo(sumProduct);
 
   sendMessage();
+}
+
+function addNewRow(){
+   // Get the stocks-table element
+   const addRow = document.querySelector("#button-row");
+   stocksTable.appendChild(addRow);
+
+   // Create a new row element
+   const newStockRow = document.createElement("tr");
+ 
+   // Add the cells to the row
+   const tickerCell = document.createElement("td");
+   const tickerInput = document.createElement("input");
+   tickerInput.setAttribute("class", "width");
+   tickerInput.setAttribute("type", "text");
+   tickerInput.setAttribute("id", "ticker-" + (stocksTable.rows.length - 3));
+   tickerCell.appendChild(tickerInput);
+   newStockRow.appendChild(tickerCell);
+ 
+   const returnCell = document.createElement("td");
+   returnCell.setAttribute("id", "return-" + (stocksTable.rows.length - 3));
+   newStockRow.appendChild(returnCell);
+   const riskCell = document.createElement("td");
+   riskCell.setAttribute("id", "risk-" + (stocksTable.rows.length - 3));
+   newStockRow.appendChild(riskCell);
+ 
+   // Insert the row before the last row
+   stocksTable.insertBefore(newStockRow, addRow);
+
+    // Get the table element
+    const weightTable = document.querySelector("#weights-table");
+  
+    // Create a new row element
+    const newWeightRow = document.createElement("tr");
+  
+    // Add the cells to the row
+    const tickerCell2 = document.createElement("td");
+    tickerCell2.setAttribute("id", "weight-name-" + (weightTable.rows.length - 1));
+    newWeightRow.appendChild(tickerCell2);
+  
+    const weightCell = document.createElement("td");
+    weightCell.setAttribute("id", "weight-" + (weightTable.rows.length - 1));
+    const weightInput = document.createElement("input");
+    weightInput.setAttribute("class", "width");
+    weightInput.setAttribute("type", "text");
+    weightCell.appendChild(weightInput);
+    newWeightRow.appendChild(weightCell);
+  
+    // Insert the row before the last row
+    weightTable.append(newWeightRow);
+
 }
