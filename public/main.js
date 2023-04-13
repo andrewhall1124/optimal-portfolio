@@ -1,3 +1,5 @@
+const DATA_LENGTH = 30;
+
 const playerNameEl = document.querySelector('.user-name');
 playerNameEl.textContent = getUserName();
 
@@ -33,6 +35,37 @@ function getUserName() {
   return localStorage.getItem('userName') ?? 'Mystery player';
 }
 
+function calculateCovariance(arr1, arr2) {
+  const n = arr1.length;
+  const mean1 = arr1.reduce((acc, val) => acc + val) / n;
+  const mean2 = arr2.reduce((acc, val) => acc + val) / n;
+  
+  let cov = 0;
+  
+  for (let i = 0; i < n; i++) {
+    cov += (arr1[i] - mean1) * (arr2[i] - mean2);
+  }
+  
+  cov /= n;
+  
+  return cov;
+}
+
+function matrixMultiply(weightArray, covarianceMatrix){
+  n = weightArray.length;
+
+}
+
+function getWeightArray(){
+  const weightArray = [];
+  for(let i = 1; i < weightTable.rows.length - 1; i++){
+    const weightElement = document.getElementById('weight-' +i);
+    const weightValue = (weightElement.value);
+    weightArray.push(weightValue);
+  }
+  console.log(weightArray);
+}
+
 function fetchData() {
   for(let i = 1; i < stocksTable.rows.length-2; i++){
     const tickerId = 'ticker-' + i;
@@ -59,7 +92,7 @@ function fetchData() {
         const monthlyData = data['Monthly Time Series'];
         const closeData = [];
         if(data['Note'] != 'Thank you for using Alpha Vantage! Our standard API call frequency is 5 calls per minute and 500 calls per day. Please visit https://www.alphavantage.co/premium/ if you would like to target a higher API call frequency.'){
-          for (let i = 0; i < (Object.keys(monthlyData)).length; i++){
+          for (let i = 0; i < DATA_LENGTH; i++){
               closeData[i] = Number(Object.values(Object.values(monthlyData)[i])[3])
           }
         } else{
@@ -88,6 +121,9 @@ function fetchData() {
         returnElement.textContent = mean;
         riskElement.textContent = standardDeviation;
         weightNameElement.textContent = ticker;
+
+        //store the stock data in local storage
+        localStorage.setItem (`stock-${i}`, JSON.stringify(closeData));
       });
     }
   }
@@ -113,6 +149,20 @@ function fetchData() {
     sumProduct += returnValue * weightValue;
   }
   portfolioReturnEl.textContent = roundToTwo(sumProduct);
+
+  //calculate the covariance matrix from a dynamic list of stocks
+  const covarianceMatrix = [];
+  for(let i = 1; i < stocksTable.rows.length-2; i++){
+    const innerArray = [];
+    for (let j = 1; j < stocksTable.rows.length-2; j++){
+      const stockA = JSON.parse(localStorage.getItem(`stock-${i}`));
+      const stockB = JSON.parse(localStorage.getItem(`stock-${j}`));
+      const covariance = calculateCovariance(stockA,stockB);
+      innerArray.push(covariance);
+    }
+    covarianceMatrix.push(innerArray);
+  }
+  console.log(covarianceMatrix);
 
   sendMessage();
 }
@@ -157,6 +207,7 @@ function addNewRow(){
   weightInput.setAttribute("class", "width");
   weightInput.setAttribute("type", "text");
   weightInput.setAttribute("id", "weight-" + (weightTable.rows.length - 1));
+  weightInput.setAttribute("value", ".3333");
   weightCell.appendChild(weightInput);
   newWeightRow.appendChild(weightCell);
 
