@@ -6,7 +6,6 @@ function getEmptyArray(){
   for (let i = 0; i < numStocks; i++){
     defaultArray.push(0);
   }
-  console.log(defaultArray);
   return defaultArray;
 }
 
@@ -63,8 +62,6 @@ function calculateCovariance(arr1, arr2) {
 
 function matrixMultiply(weightMatrix, covarianceMatrix){
   const n = numStocks;
-
-  console.log(n);
 
   //initialize newMatrix and innerNewMatrix
   const newMatrix = [];
@@ -284,17 +281,7 @@ function testFunction(arr1, arr2){
       innerNewMatrix[i] += arr1[0][j] * arr2[j][i];
     }
   }
-  console.log(innerNewMatrix);
   newMatrix.push(innerNewMatrix);
-
-  console.log(newMatrix);
-
-  // console.log(newMatrix[0][0]);
-  // console.log(newMatrix[0][1]);
-  // console.log(newMatrix[0][2]);
-  // console.log(arr1[0][0]);
-  // console.log(arr1[0][1]);
-  // console.log(arr1[0][2]);
 
   // Compute sumproduct of new matrix and weight matrix 
   let result = 0;
@@ -311,7 +298,4 @@ function testFunction(arr1, arr2){
   array2.push([1,2,3]);
   array2.push([1,2,3]);
   array2.push([1,2,3]);
-  console.log(array1);
-  console.log(array2);
   const result = testFunction(array1, array2);
-  console.log(result);
