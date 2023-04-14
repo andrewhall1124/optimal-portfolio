@@ -1,4 +1,14 @@
 const DATA_LENGTH = 30;
+let numStocks = 1;
+
+function getEmptyArray(){
+  const defaultArray = [];
+  for (let i = 0; i < numStocks; i++){
+    defaultArray.push(0);
+  }
+  console.log(defaultArray);
+  return defaultArray;
+}
 
 const playerNameEl = document.querySelector('.user-name');
 playerNameEl.textContent = getUserName();
@@ -51,19 +61,48 @@ function calculateCovariance(arr1, arr2) {
   return cov;
 }
 
-function matrixMultiply(weightArray, covarianceMatrix){
-  n = weightArray.length;
+function matrixMultiply(weightMatrix, covarianceMatrix){
+  const n = numStocks;
 
+  console.log(n);
+
+  //initialize newMatrix and innerNewMatrix
+  const newMatrix = [];
+  const innerNewMatrix = [];
+  for(let i = 0; i < n; i++){
+    innerNewMatrix.push(0);
+  }
+
+  //do matrix multiplication
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      innerNewMatrix[i] += weightMatrix[0][j] * covarianceMatrix[j][i];
+    }
+  }
+
+  //push results
+  newMatrix.push(innerNewMatrix);
+
+  //initialize resultMatrix
+  let result = 0;
+  for (let i = 0; i < n; i++){
+    result += newMatrix[0][i] * weightMatrix[0][i];
+  }
+
+
+  return Math.sqrt(result);
 }
 
 function getWeightArray(){
   const weightArray = [];
+  const innerWeightArray = [];
   for(let i = 1; i < weightTable.rows.length - 1; i++){
     const weightElement = document.getElementById('weight-' +i);
-    const weightValue = (weightElement.value);
-    weightArray.push(weightValue);
+    const weightValue = (parseFloat(weightElement.value));
+    innerWeightArray.push(weightValue);
   }
-  console.log(weightArray);
+  weightArray.push(innerWeightArray);
+  return weightArray;
 }
 
 function fetchData() {
@@ -84,7 +123,7 @@ function fetchData() {
       .then((response) => response.json())
       .then((data) => {
 
-        function roundToTwo(num) {
+        function roundToFour(num) {
           return +(Math.round(num + "e+4")  + "e-4");
         }
         
@@ -108,11 +147,11 @@ function fetchData() {
         
         //find the average return of the last 5 years
         const sum = returnData.reduce((accumulator, currentValue) => accumulator + currentValue);
-        const mean = roundToTwo(sum / returnData.length);
+        const mean = roundToFour(sum / returnData.length);
 
         //calculate standard deviation of returns over the last 5 years
         const variance = returnData.reduce((accumulator, currentValue) => accumulator + Math.pow(currentValue - mean, 2), 0) / closeData.length;
-        const standardDeviation = roundToTwo(Math.sqrt(variance));
+        const standardDeviation = roundToFour(Math.sqrt(variance));
 
         //output return and standard deviation
         const returnElement = document.getElementById(returnId);
@@ -131,10 +170,9 @@ function fetchData() {
 
  function calculateData(){
   const portfolioReturnEl = document.getElementById('portfolio-return');
-  // const portfolioRiskEl = document.getElementById('portfolio-risk');
   // const portfolioSharpeEl = document.getElementById('portfolio-sharpe');
 
-  function roundToTwo(num) {
+  function roundToFour(num) {
     return +(Math.round(num + "e+4")  + "e-4");
   }
 
@@ -148,7 +186,7 @@ function fetchData() {
 
     sumProduct += returnValue * weightValue;
   }
-  portfolioReturnEl.textContent = roundToTwo(sumProduct);
+  portfolioReturnEl.textContent = roundToFour(sumProduct);
 
   //calculate the covariance matrix from a dynamic list of stocks
   const covarianceMatrix = [];
@@ -162,12 +200,20 @@ function fetchData() {
     }
     covarianceMatrix.push(innerArray);
   }
-  console.log(covarianceMatrix);
+  
+  const weightArray = getWeightArray();
+
+  //calculate portfolio risk
+  const portfolioRiskEl = document.getElementById('portfolio-risk');
+  portfolioRiskEl.textContent = roundToFour(matrixMultiply(weightArray, covarianceMatrix));
 
   sendMessage();
 }
 
 function addNewRow(){
+  //increment numStocks
+  numStocks += 1;
+
   // Get the stocks-table element
   const addRow = document.querySelector("#button-row");
   stocksTable.appendChild(addRow);
@@ -216,10 +262,56 @@ function addNewRow(){
 }
 
 function deleteLastRow(){
+  //decrement numStocks
+  numStocks -= 1;
+
   const stockRows = stocksTable.rows;
   const weightRows = weightTable.rows;
   if (stockRows.length > 4) {
     stocksTable.deleteRow(stockRows.length - 1);
     weightTable.deleteRow(weightRows.length -1)
   }
+
 }
+
+
+function testFunction(arr1, arr2){
+  // Perform matrix multiplication
+  const newMatrix = [];
+  const innerNewMatrix = [0,0,0]
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      innerNewMatrix[i] += arr1[0][j] * arr2[j][i];
+    }
+  }
+  console.log(innerNewMatrix);
+  newMatrix.push(innerNewMatrix);
+
+  console.log(newMatrix);
+
+  // console.log(newMatrix[0][0]);
+  // console.log(newMatrix[0][1]);
+  // console.log(newMatrix[0][2]);
+  // console.log(arr1[0][0]);
+  // console.log(arr1[0][1]);
+  // console.log(arr1[0][2]);
+
+  // Compute sumproduct of new matrix and weight matrix 
+  let result = 0;
+  for (let i = 0; i < 3; i++){
+    result += newMatrix[0][i] * arr1[0][i];
+  }
+
+  return result;
+}
+
+  const array1 = [];
+  array1.push([1,2,3]);
+  const array2 = [];
+  array2.push([1,2,3]);
+  array2.push([1,2,3]);
+  array2.push([1,2,3]);
+  console.log(array1);
+  console.log(array2);
+  const result = testFunction(array1, array2);
+  console.log(result);
