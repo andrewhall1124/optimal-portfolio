@@ -137,6 +137,7 @@ function fetchData() {
 
         //create an array with the average return of each month 
         const returnData = [];
+        closeData.reverse();
         for (let i = 0; i < closeData.length; i++){
           returnData[i] = (closeData[i] / closeData[i-1]) -1;
         }
