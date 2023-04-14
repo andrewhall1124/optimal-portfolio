@@ -83,19 +83,6 @@ secureApiRouter.use(async (req, res, next) => {
   }
 });
 
-// // GetScores
-// secureApiRouter.get('/scores', async (req, res) => {
-//   const scores = await DB.getHighScores();
-//   res.send(scores);
-// });
-
-// // SubmitScore
-// secureApiRouter.post('/score', async (req, res) => {
-//   await DB.addScore(req.body);
-//   const scores = await DB.getHighScores();
-//   res.send(scores);
-// });
-
 // Default error handler
 app.use(function (err, req, res, next) {
   res.status(500).send({ type: err.name, message: err.message });
