@@ -1,5 +1,6 @@
 const DATA_LENGTH = 30;
 let numStocks = 1;
+const RISK_FREE = .0345;
 
 function getEmptyArray(){
   const defaultArray = [];
@@ -71,14 +72,12 @@ function matrixMultiply(weightMatrix, covarianceMatrix){
   }
 
   //do matrix multiplication
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
-      innerNewMatrix[i] += weightMatrix[0][j] * covarianceMatrix[j][i];
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < n; j++) {
+        innerNewMatrix[i] += weightMatrix[0][j] * covarianceMatrix[j][i];
+      }
     }
-  }
-
-  //push results
-  newMatrix.push(innerNewMatrix);
+    newMatrix.push(innerNewMatrix);
 
   //initialize resultMatrix
   let result = 0;
@@ -160,7 +159,7 @@ function fetchData() {
         weightNameElement.textContent = ticker;
 
         //store the stock data in local storage
-        localStorage.setItem (`stock-${i}`, JSON.stringify(closeData));
+        localStorage.setItem (`stock-${i}`, JSON.stringify(returnData));
       });
     }
   }
@@ -184,7 +183,9 @@ function fetchData() {
 
     sumProduct += returnValue * weightValue;
   }
-  portfolioReturnEl.textContent = roundToFour(sumProduct);
+  const portfolioReturn = sumProduct;
+
+  portfolioReturnEl.textContent = roundToFour(portfolioReturn);
 
   //calculate the covariance matrix from a dynamic list of stocks
   const covarianceMatrix = [];
@@ -203,7 +204,13 @@ function fetchData() {
 
   //calculate portfolio risk
   const portfolioRiskEl = document.getElementById('portfolio-risk');
-  portfolioRiskEl.textContent = roundToFour(matrixMultiply(weightArray, covarianceMatrix));
+  const portfolioRisk = matrixMultiply(weightArray, covarianceMatrix);
+  portfolioRiskEl.textContent = roundToFour(portfolioRisk);
+
+  //calculate portfolio sharpe ratio
+  const sharpeRatioEl = document.getElementById('portfolio-sharpe');
+  const portfolioSharpe = (portfolioReturn - RISK_FREE)/portfolioRisk;
+  sharpeRatioEl.textContent = roundToFour(portfolioSharpe);
 
   sendMessage();
 }
@@ -284,6 +291,7 @@ function testFunction(arr1, arr2){
   }
   newMatrix.push(innerNewMatrix);
 
+
   // Compute sumproduct of new matrix and weight matrix 
   let result = 0;
   for (let i = 0; i < 3; i++){
@@ -294,9 +302,10 @@ function testFunction(arr1, arr2){
 }
 
   const array1 = [];
-  array1.push([1,2,3]);
+  array1.push([5,6,7]);
   const array2 = [];
   array2.push([1,2,3]);
-  array2.push([1,2,3]);
-  array2.push([1,2,3]);
+  array2.push([4,5,6]);
+  array2.push([7,8,9]);
+
   const result = testFunction(array1, array2);
