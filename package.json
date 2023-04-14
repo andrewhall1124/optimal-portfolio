@@ -4,17 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "parcel src/index.html",
+    "build": "parcel build src/index.html"
+
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "chart.js": "^4.2.1",
     "cookie-parser": "^1.4.6",
     "express": "^4.18.2",
     "math.js": "^1.1.46",
     "mongodb": "^5.2.0",
+    "parcel": "^2.8.3",
     "uuid": "^9.0.0",
     "ws": "^8.13.0"
   }
