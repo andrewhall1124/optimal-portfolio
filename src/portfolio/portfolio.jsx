@@ -1,5 +1,5 @@
 import React from 'react';
-import '../App.css';
+import './portfolio.css'
 
 export function Portfolio() {
 
@@ -39,12 +39,10 @@ export function Portfolio() {
               </tr>
               <tr>
                 <th>Ticker</th>
-                {/* <!-- <th>Alpha</th> --> */}
                 <th>Weight</th>
               </tr>
               <tr>
                 <td id = "weight-name-1"></td>
-                {/* <!-- <td></td> --> */}
                 <td></td>
               </tr> 
             </table>

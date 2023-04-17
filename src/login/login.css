@@ -1,0 +1,152 @@
+.about-container{
+  background: lightgray;
+  height: calc(100% - 16px);
+  margin:8px 0px 8px; 
+  border-radius: 15px;
+  flex: 1;
+}
+
+.about-text-container{
+  background: white;
+  height: calc(100% - 16px);
+  margin: 8px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-text{
+  margin: 16px;
+font-size:large
+}
+
+.login-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .5em;
+}
+
+.welcome-text{
+  font-size: 2em;
+}
+
+.logo-color{
+  color:var(--darkneongreen);
+}
+
+.login-input-container{
+  flex-direction: column;
+  gap: .5em;
+}
+
+.login-input{
+  height: 1.5em;
+  font-size: 1em;
+  border-radius: 15px;
+}
+
+.login-button-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: .5em;
+  width: 100%;
+}
+
+.login-button{
+  font-size: 1em;
+  height: 1.5em;
+  width: calc(50% - .25em);
+  background: var(--neongreen);
+  border: none;
+  border-radius: 15px;
+  color: var(--darkneongreen);
+}
+
+.login-button:hover{
+  background: var(--darkneongreen);
+  color: var(--neongreen);
+}
+
+#playerName {
+  color: var(--darkneongreen);
+  font-size: 1.5em;
+}
+
+.play-controls-container{
+  flex-direction: column;
+  gap: .5em;
+  width: 100%;
+  align-items: center;
+}
+
+.play-button-container{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  gap: .5em;
+}
+
+.play-button{
+  font-size: 1em;
+  height: 1.5em;
+  width: calc(25% - .25em);
+  background: var(--neongreen);
+  border: none;
+  border-radius: 15px;
+  color: var(--darkneongreen);
+}
+
+.play-button:hover{
+  background: var(--darkneongreen);
+  color: var(--neongreen);
+}
+
+.messages-container{
+  background: white;
+  margin: 8px 0 8px 0;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  min-height: 2em;
+  flex: 1;
+  text-align: center;
+}
+
+.user-name{
+  display: none;
+}
+
+.message-header{
+  height: 2em;
+  border: solid thin lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.message-data{
+  height:1.5em;
+  border:solid thin lightgray;
+}
+
+#msgModal{
+background: white;
+border: solid lightgray;
+border-radius: 15px;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+height: 10%;
+width: 30%;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: space-around;
+}

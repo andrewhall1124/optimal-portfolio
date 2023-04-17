@@ -40,10 +40,9 @@ React.useEffect(() => {
               <NavLink to='index'>Optimal-Portfolio</NavLink>
             </div>
           </div>
-          {authState === AuthState.Authenticated && (
           <div className="nav-item">
             <NavLink to='portfolio'>Portfolios</NavLink>
-          </div>)}
+          </div>
           <div className="nav-item">
             <NavLink to='about'>About</NavLink>
           </div>
