@@ -8,8 +8,8 @@ export function Login() {
       <div className="about-text-container">
         <div className = "login-container">
           <div className="welcome-text">Welcome to <span class = "logo-color">Optimal-Portfolio</span></div>
-          {/* <!-- Displayed when needing authentication --> */}
-          <div className="login-input-container" id="loginControls" style={{display: "none"}}>
+          {/*Displayed when needing authentication*/}
+          <div className="login-input-container" id="loginControls" >
             <div className="input-container">
               <input
                 className="login-input"

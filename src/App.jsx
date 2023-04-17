@@ -50,7 +50,7 @@ React.useEffect(() => {
       </header>
 
       <Routes>
-        {/* <Route
+        <Route
             path='/'
             element={
               <Login
@@ -63,8 +63,8 @@ React.useEffect(() => {
               />
             }
             exact
-          />  */}
-        <Route path='/' element={<Login />} exact />
+          /> 
+        <Route path='/index' element={<Login />} exact />
         <Route path='/portfolio' element={<Portfolio />} />
         <Route path='/about' element={<About />} />
         {/* <Route path='*' element={<NotFound />} /> */}
