@@ -59,7 +59,7 @@ function fetchData() {
         //parse all monthly close data
         const monthlyData = data['Monthly Time Series'];
         const closeData = [];
-        if(data['Note'] != 'Thank you for using Alpha Vantage! Our standard API call frequency is 5 calls per minute and 500 calls per day. Please visit https://www.alphavantage.co/premium/ if you would like to target a higher API call frequency.'){
+        if(data['Note'] !== 'Thank you for using Alpha Vantage! Our standard API call frequency is 5 calls per minute and 500 calls per day. Please visit https://www.alphavantage.co/premium/ if you would like to target a higher API call frequency.'){
           for (let i = 0; i < DATA_LENGTH; i++){
               closeData[i] = Number(Object.values(Object.values(monthlyData)[i])[3])
           }
@@ -208,6 +208,70 @@ function matrixMultiply(weightMatrix, covarianceMatrix){
   return Math.sqrt(result);
 }
 
+function addNewRow(){
+  //increment numStocks
+  numStocks += 1;
+
+  // Get the stocks-table element
+  const addRow = document.querySelector("#button-row");
+  stocksTable.appendChild(addRow);
+
+  // Create a new row element
+  const newStockRow = document.createElement("tr");
+
+  // Add the cells to the row
+  const tickerCell = document.createElement("td");
+  const tickerInput = document.createElement("input");
+  tickerInput.setAttribute("class", "width");
+  tickerInput.setAttribute("type", "text");
+  tickerInput.setAttribute("id", "ticker-" + (stocksTable.rows.length - 2));
+  tickerCell.appendChild(tickerInput);
+  newStockRow.appendChild(tickerCell);
+
+  const returnCell = document.createElement("td");
+  returnCell.setAttribute("id", "return-" + (stocksTable.rows.length - 2));
+  newStockRow.appendChild(returnCell);
+  const riskCell = document.createElement("td");
+  riskCell.setAttribute("id", "risk-" + (stocksTable.rows.length - 2));
+  newStockRow.appendChild(riskCell);
+
+  // Insert the row before the last row
+  stocksTable.insertBefore(newStockRow, addRow);
+
+  // Create a new row element
+  const newWeightRow = document.createElement("tr");
+
+  // Add the cells to the row
+  const tickerCell2 = document.createElement("td");
+  tickerCell2.setAttribute("id", "weight-name-" + (weightTable.rows.length - 1));
+  newWeightRow.appendChild(tickerCell2);
+
+  const weightCell = document.createElement("td");
+  const weightInput = document.createElement("input");
+  weightInput.setAttribute("class", "width");
+  weightInput.setAttribute("type", "text");
+  weightInput.setAttribute("id", "weight-" + (weightTable.rows.length - 1));
+  weightInput.setAttribute("value", ".3333");
+  weightCell.appendChild(weightInput);
+  newWeightRow.appendChild(weightCell);
+
+  // Insert the row before the last row
+  weightTable.append(newWeightRow);
+}
+
+function deleteLastRow(){
+  //decrement numStocks
+  numStocks -= 1;
+
+  const stockRows = stocksTable.rows;
+  const weightRows = weightTable.rows;
+  if (stockRows.length > 4) {
+    stocksTable.deleteRow(stockRows.length - 1);
+    weightTable.deleteRow(weightRows.length -1)
+  }
+
+}
+
 export function Portfolio() {
 
   return (
@@ -231,8 +295,8 @@ export function Portfolio() {
               </tr>
               <tr>
                 <td id="button-row" >
-                  <input type="submit" class="add-row-button" value="+" onclick="addNewRow()"/>
-                  <input type="submit" class="minus-row-button" value="-" onclick="deleteLastRow()"/>
+                  <input type="submit" class="add-row-button" value="+" onClick={addNewRow}/>
+                  <input type="submit" class="minus-row-button" value="-" onClick={deleteLastRow} />
                 </td>
               </tr>
             </table>
