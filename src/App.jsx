@@ -1,4 +1,10 @@
-import logo from './logo.svg';
+import React from 'react';
+
+import { NavLink, Route, Routes } from 'react-router-dom';
+import { Login } from './login/login';
+import { Portfolio } from './portfolio/portfolio';
+import { About } from './about/about';
+import { AuthState } from './login/authState';
 import './App.css';
 
 function App() {
@@ -31,24 +37,38 @@ React.useEffect(() => {
         <div className="nav-bar">
           <div className="logo-container">
             <div className="logo">
-              <NavLink to='index.html'>Optimal-Portfolio</NavLink>
+              <NavLink to='index'>Optimal-Portfolio</NavLink>
             </div>
           </div>
           {authState === AuthState.Authenticated && (
           <div className="nav-item">
-            <NavLink to='portfolio.html'>Portfolios</NavLink>
+            <NavLink to='portfolio'>Portfolios</NavLink>
           </div>)}
           <div className="nav-item">
-            <NavLink to='about.html'>About</NavLink>
+            <NavLink to='about'>About</NavLink>
           </div>
         </div>
       </header>
 
       <Routes>
+        {/* <Route
+            path='/'
+            element={
+              <Login
+                userName={userName}
+                authState={authState}
+                onAuthChange={(userName, authState) => {
+                  setAuthState(authState);
+                  setUserName(userName);
+                }}
+              />
+            }
+            exact
+          />  */}
         <Route path='/' element={<Login />} exact />
-        <Route path='/portfolio' element={<Portfolios />} />
+        <Route path='/portfolio' element={<Portfolio />} />
         <Route path='/about' element={<About />} />
-        <Route path='*' element={<NotFound />} />
+        {/* <Route path='*' element={<NotFound />} /> */}
       </Routes>
       
       <footer>
@@ -61,4 +81,7 @@ React.useEffect(() => {
   );
 }
 
+// function NotFound() {
+//   return <main>404: Return to sender. Address unknown.</main>;
+// }
 export default App;
