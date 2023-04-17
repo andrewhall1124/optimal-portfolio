@@ -7,7 +7,7 @@ export function Login() {
     <div className="about-container">
       <div className="about-text-container">
         <div className = "login-container">
-          <div className="welcome-text">Welcome to <span class = "logo-color">Optimal-Portfolio</span></div>
+          <div className="welcome-text">Welcome to <span className = "logo-color">Optimal-Portfolio</span></div>
           {/*Displayed when needing authentication*/}
           <div className="login-input-container" id="loginControls" >
             <div className="input-container">
@@ -55,7 +55,7 @@ export function Login() {
       <div className="modal-body">error message here</div>
         <div className = "login-button-container">
           <button
-            type="button" onclick = "closeModal()" class="login-button"
+            type="button" onclick = "closeModal()" className="login-button"
           >
             Close
           </button>
