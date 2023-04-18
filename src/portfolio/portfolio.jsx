@@ -1,5 +1,8 @@
 import React from 'react';
-import './portfolio.css'
+import './portfolio.css';
+
+const DATA_LENGTH = 36;
+
 
 export function Portfolio(){
   return(
@@ -57,6 +60,7 @@ function StatsContainer(){
 }
 
 function UpperStatsContainer(props){
+
   return(
     <div className='inner-stats-container'>
       <StocksTable 
@@ -127,7 +131,9 @@ function PlusMinusRow({onAdd, onRemove}){
 function Button(props){
   return(
     <div className='button-container-1'>
-      <input className='submit-button' type = "Submit" value={props.buttonName}/>
+      <input 
+      className='submit-button' type = "Submit" 
+      value={props.buttonName}/>
     </div>
   )
 }
