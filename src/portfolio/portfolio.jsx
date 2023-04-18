@@ -30,6 +30,18 @@ function UpperStatsContainer(){
 }
 
 function StocksTable(){
+  const [rows, setRows] = React.useState([
+    {ticker: '', return: '', risk: ''},
+  ]);
+
+  const addRow = () => {
+    setRows([...rows, {ticker: '', return: '', risk: ''}]);
+  };
+
+  const removeRow = () => {
+    setRows(rows.slice(0, -1));
+  };
+
   return(
     <div className='stocks-container'>
       <table id="stocks-table">
@@ -42,16 +54,28 @@ function StocksTable(){
           <th>Er</th>
           <th>SD</th>
         </tr>
+        {rows.map((row, index) => (
+          <TableRow key={index} rowNumber={index + 1} />
+        ))}
         <tr>
-          <td><input className="width" type="text" id="ticker-1"/></td>
-          <td id="return-1"></td>
-          <td id="risk-1"></td>
-        </tr>
-        <tr>
-          <PlusMinusRow/>
+          <PlusMinusRow onAdd={addRow} onRemove={removeRow}/>
         </tr>
       </table>
     </div>
+  )
+}
+
+function TableRow({rowNumber}){
+  const tickerId = `ticker-${rowNumber}`
+  const returnId = `return-${rowNumber}`
+  const riskId = `risk-${rowNumber}`
+
+  return(
+    <tr>
+      <td><input className="width" type="text" id={tickerId}/></td>
+      <td id={returnId}></td>
+      <td id={riskId}></td>
+    </tr>
   )
 }
 
@@ -63,11 +87,11 @@ function ContainerHeader(props){
   )
 }
 
-function PlusMinusRow(){
+function PlusMinusRow({onAdd, onRemove}){
   return(
     <td id="button-row" >
-      <input type="submit" className="add-row-button" value="+"/>
-      <input type="submit" className="minus-row-button" value="-"/>
+      <input type="submit" className="add-row-button" value="+" onClick={onAdd}/>
+      <input type="submit" className="minus-row-button" value="-" onClick={onRemove}/>
     </td>
   )
 }
