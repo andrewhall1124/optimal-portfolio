@@ -11,36 +11,52 @@ export function Portfolio(){
 }
 
 function StatsContainer(){
+  const [stockRows, setStockRows] = React.useState([
+    {ticker: '', return: '', risk: ''},
+  ]);
+
+  const [weightRows, setWeightRows] = React.useState([
+    {weightName: '',weight: ''}
+  ])
+
+  const addRow = () => {
+    setStockRows([...stockRows, {ticker: '', return: '', risk: ''}]);
+    setWeightRows([...weightRows, {weightName: '',weight: ''}]);
+  };
+
+  const removeRow = () => {
+    setStockRows(stockRows.slice(0, -1));
+    setWeightRows(weightRows.slice(0, -1));
+  };
+
   return(
     <div className='stats-container'>
-      <UpperStatsContainer/>
-      <LowerStatsContainer/>
+      <UpperStatsContainer 
+      rows={stockRows} setRows = {setStockRows}
+      addRow={addRow} removeRow = {removeRow}
+      />
+      <LowerStatsContainer
+      rows={weightRows} setRows = {setWeightRows}
+      addRow={addRow} removeRow = {removeRow}
+      />
       <MessagesContainer/>
     </div>
   )
 }
 
-function UpperStatsContainer(){
+function UpperStatsContainer(props){
   return(
     <div className='inner-stats-container'>
-      <StocksTable/>
+      <StocksTable 
+      rows={props.rows} setRows={props.setRows}
+      addRow={props.addRow} removeRow = {props.removeRow}
+      />
       <Button buttonName = "Fetch"/>
     </div>
   )
 }
 
-function StocksTable(){
-  const [rows, setRows] = React.useState([
-    {ticker: '', return: '', risk: ''},
-  ]);
-
-  const addRow = () => {
-    setRows([...rows, {ticker: '', return: '', risk: ''}]);
-  };
-
-  const removeRow = () => {
-    setRows(rows.slice(0, -1));
-  };
+function StocksTable(props){
 
   return(
     <div className='stocks-container'>
@@ -54,18 +70,18 @@ function StocksTable(){
           <th>Er</th>
           <th>SD</th>
         </tr>
-        {rows.map((row, index) => (
-          <TableRow key={index} rowNumber={index + 1} />
+        {props.rows.map((row, index) => (
+          <StocksTableRow key={index} rowNumber={index + 1} />
         ))}
         <tr>
-          <PlusMinusRow onAdd={addRow} onRemove={removeRow}/>
+          <PlusMinusRow onAdd={props.addRow} onRemove={props.removeRow}/>
         </tr>
       </table>
     </div>
   )
 }
 
-function TableRow({rowNumber}){
+function StocksTableRow({rowNumber}){
   const tickerId = `ticker-${rowNumber}`
   const returnId = `return-${rowNumber}`
   const riskId = `risk-${rowNumber}`
@@ -104,17 +120,19 @@ function Button(props){
   )
 }
 
-function LowerStatsContainer(){
+function LowerStatsContainer(props){
   return(
     <div className='inner-stats-container'>
-      <WeightsTable/>
+      <WeightsTable 
+      rows={props.rows} setRows = {props.setRows}
+      />
       <PortfolioTable/>
       <Button buttonName="Calculate"/>
     </div>
   )
 }
 
-function WeightsTable(){
+function WeightsTable(props){
   return(
     <div className='weights-container'>
       <table id="weights-table">
@@ -126,12 +144,22 @@ function WeightsTable(){
           <th>Ticker</th>
           <th>Weight</th>
         </tr>
-        <tr>
-          <td id = "weight-name-1"></td>
-          <td><input className="width" type="text" id="weight-1" value=".3333"/></td>
-        </tr> 
-      </table>
+        {props.rows.map((row, index) => (
+          <WeightsTableRow key={index} rowNumber={index + 1} />
+        ))}      </table>
     </div>
+  )
+}
+
+function WeightsTableRow({rowNumber}){
+  const weightNameId = `weight-name-${rowNumber}`
+  const weightId = `weight-${rowNumber}`
+
+  return(
+    <tr>
+    <td id ={weightNameId}></td>
+    <td><input className="width" type="text" id={weightId} value=".3333"/></td>
+  </tr> 
   )
 }
 
