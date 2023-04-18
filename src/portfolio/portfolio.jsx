@@ -19,6 +19,18 @@ function StatsContainer(){
     {weightName: '',weight: ''}
   ])
 
+  React.useEffect(() => {
+    if (stockRows.length === 0) {
+      setStockRows([{ ticker: "", return: "", risk: "" }]);
+    }
+  }, [stockRows]);
+
+  React.useEffect(() => {
+    if (weightRows.length === 0) {
+      setWeightRows([{weightName: '',weight: ''}]);
+    }
+  }, [weightRows]);
+
   const addRow = () => {
     setStockRows([...stockRows, {ticker: '', return: '', risk: ''}]);
     setWeightRows([...weightRows, {weightName: '',weight: ''}]);
