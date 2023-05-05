@@ -3,6 +3,10 @@ import './portfolio.css';
 
 // const DATA_LENGTH = 36;
 
+function createId(){
+  return Math.round(Math.random()*10000);
+}
+
 export function Portfolio(){
   return(
     <main>
@@ -14,54 +18,67 @@ export function Portfolio(){
 
 function StatsContainer(){
   //declare stock and weight row arrays
+  let newId = createId();
   const [stockRows, setStockRows] = React.useState([
-    {ticker: '', return: '', risk: ''},
+    {id: newId,ticker: '', return: '', risk: ''},
   ]);
   const [weightRows, setWeightRows] = React.useState([
-    {weightName: '',weight: ''}
+    {id: newId, ticker: '',weight: ''}
   ])
 
   //Sets first rows of stocks and weights table
-  React.useEffect(() => {
-    if (stockRows.length === 0) {
-      setStockRows([{ ticker: "", return: "", risk: "" }]);
-    }
-    if (weightRows.length === 0) {
-      setWeightRows([{weightName: '',weight: ''}]);
-    }
-  }, [stockRows, weightRows]);
+  // React.useEffect(() => {
+  //   if (stockRows.length === 0) {
+  //     setStockRows([{ id:'',ticker: "", return: "", risk: "" }]);
+  //   }
+  //   if (weightRows.length === 0) {
+  //     setWeightRows([{ticker: '', weightName: '',weight: ''}]);
+  //   }
+  // }, [stockRows, weightRows]);
 
   //Handle ticker input changes
-  const handleTicker = (rowId, event) => {
+  const handleTicker = (stockRowId, event) => {
     setStockRows(
-        stockRows.map((row) => {
-          if (row.id === rowId) {
-          return { id: row.id, ticker: event.target.value, return: row.return, risk: row.risk}
+        stockRows.map((stockRow) => {
+          if (stockRow.id === stockRowId) {
+          return { id: stockRow.id, ticker: event.target.value, return: '', risk: ''}
         }
-        return row;
+        return stockRow;
       })
     );
+    setWeightRows(
+      weightRows.map((weightRow) => {
+        if (weightRow.id === stockRowId) {
+        return { id: weightRow.id, ticker: event.target.value, return: '', risk: ''}
+      }
+      return weightRow;
+    })
+  );
   };
 
   //add and subtract row functions
   const addRow = () => {
-    setStockRows([...stockRows, {ticker: '', return: '', risk: ''}]);
-    setWeightRows([...weightRows, {weightName: '',weight: ''}]);
+    let newId = createId();
+    setStockRows([...stockRows, {id: newId, ticker: '', return: '', risk: ''}]);
+    setWeightRows([...weightRows, {id: newId, ticker: '',weight: ''}]);
   };
-  const removeRow = () => {
-    setStockRows(stockRows.slice(0, -1));
-    setWeightRows(weightRows.slice(0, -1));
+  const removeRow = (stockRowId) => {
+    let updatedStockRows = stockRows.filter(stockRow => stockRow.id !== stockRowId);
+    setStockRows(updatedStockRows);
+    let updatedWeightRows = weightRows.filter(weightRow => weightRow.id !== stockRowId);
+    setWeightRows(updatedWeightRows);
   };
 
   
   const fetchData = () => {
     console.log(stockRows);
+    console.log(weightRows);
   };
 
   return(
     <div className='stats-container'>
       <UpperStatsContainer 
-      rows={stockRows} setRows = {setStockRows}
+      stockRows={stockRows} setStockRows = {setStockRows}
       addRow={addRow} removeRow = {removeRow}
       fetchData={fetchData} handleTicker = {handleTicker}
       />
@@ -79,7 +96,7 @@ function UpperStatsContainer(props){
   return(
     <div className='inner-stats-container'>
       <StocksTable 
-      rows={props.rows} setRows={props.setRows}
+      stockRows={props.stockRows} setStockRows={props.setStockRows}
       addRow={props.addRow} removeRow = {props.removeRow}
       handleTicker={props.handleTicker}
       />
@@ -97,7 +114,7 @@ function StocksTable(props){
     <div className='stocks-container'>
       <table id="stocks-table">
         <ContainerHeader 
-        tableWidth="3" 
+        tableWidth="4" 
         tableName="Stocks"
         />
         <tr>
@@ -105,36 +122,35 @@ function StocksTable(props){
           <th>Er</th>
           <th>SD</th>
         </tr>
-        {props.rows.map((row, index) => (
+        {props.stockRows.map(stockRow => (
           <StocksTableRow 
-          key={index} 
-          rowNumber={index + 1}
+          stockRow={stockRow}
           handleTicker={props.handleTicker} 
+          removeRow={props.removeRow}
           />
         ))}
         <tr>
-          <PlusMinusRow 
-          onAdd={props.addRow} 
-          onRemove={props.removeRow}
-          />
+          <td colSpan={'4'}>
+            <button className='plus-button' onClick={props.addRow}>+</button>
+          </td>
         </tr>
       </table>
     </div>
   )
 }
 
-function StocksTableRow({rowNumber, handleTicker}){
-  const tickerId = `ticker-${rowNumber}`;
-  const returnId = `return-${rowNumber}`;
-  const riskId = `risk-${rowNumber}`;
+function StocksTableRow(props){
 
   return(
     <tr>
       <td>
-        <input className="width" type="text" id={tickerId} onChange={handleTicker}/>
+        <input value={props.stockRow.ticker} onChange={(event) => props.handleTicker(props.stockRow.id, event)}></input>
       </td>
-      <td id={returnId}></td>
-      <td id={riskId}></td>
+      <td>{props.stockRow.return}</td>
+      <td>{props.stockRow.risk}</td>
+      <td>
+        <button className='minus-button' onClick={() => props.removeRow(props.stockRow.id)}>-</button>
+      </td>
     </tr>
   )
 }
@@ -144,19 +160,6 @@ function ContainerHeader(props){
     <tr>
       <th colSpan={props.tableWidth}>{props.tableName}</th>
     </tr>
-  )
-}
-
-function PlusMinusRow({onAdd, onRemove}){
-  return(
-    <td id="button-row">
-      <button className="add-row-button" onClick={onAdd}>
-        +
-      </button>
-      <button className="minus-row-button" onClick={onRemove}>
-        -
-      </button>
-    </td>
   )
 }
 
