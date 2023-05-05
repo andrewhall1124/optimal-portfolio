@@ -1,8 +1,7 @@
 import React from 'react';
 import './portfolio.css';
 
-const DATA_LENGTH = 36;
-
+// const DATA_LENGTH = 36;
 
 export function Portfolio(){
   return(
@@ -14,34 +13,49 @@ export function Portfolio(){
 }
 
 function StatsContainer(){
+  //declare stock and weight row arrays
   const [stockRows, setStockRows] = React.useState([
     {ticker: '', return: '', risk: ''},
   ]);
-
   const [weightRows, setWeightRows] = React.useState([
     {weightName: '',weight: ''}
   ])
 
+  //Sets first rows of stocks and weights table
   React.useEffect(() => {
     if (stockRows.length === 0) {
       setStockRows([{ ticker: "", return: "", risk: "" }]);
     }
-  }, [stockRows]);
-
-  React.useEffect(() => {
     if (weightRows.length === 0) {
       setWeightRows([{weightName: '',weight: ''}]);
     }
-  }, [weightRows]);
+  }, [stockRows, weightRows]);
 
+  //Handle ticker input changes
+  const handleTicker = (rowId, event) => {
+    setStockRows(
+        stockRows.map((row) => {
+          if (row.id === rowId) {
+          return { id: row.id, ticker: event.target.value, return: row.return, risk: row.risk}
+        }
+        return row;
+      })
+    );
+  };
+
+  //add and subtract row functions
   const addRow = () => {
     setStockRows([...stockRows, {ticker: '', return: '', risk: ''}]);
     setWeightRows([...weightRows, {weightName: '',weight: ''}]);
   };
-
   const removeRow = () => {
     setStockRows(stockRows.slice(0, -1));
     setWeightRows(weightRows.slice(0, -1));
+  };
+
+  
+  const fetchData = () => {
+    console.log(stockRows);
   };
 
   return(
@@ -49,6 +63,7 @@ function StatsContainer(){
       <UpperStatsContainer 
       rows={stockRows} setRows = {setStockRows}
       addRow={addRow} removeRow = {removeRow}
+      fetchData={fetchData} handleTicker = {handleTicker}
       />
       <LowerStatsContainer
       rows={weightRows} setRows = {setWeightRows}
@@ -66,8 +81,12 @@ function UpperStatsContainer(props){
       <StocksTable 
       rows={props.rows} setRows={props.setRows}
       addRow={props.addRow} removeRow = {props.removeRow}
+      handleTicker={props.handleTicker}
       />
-      <Button buttonName = "Fetch"/>
+      <Button 
+      buttonName = "Fetch"
+      function={props.fetchData}
+      />
     </div>
   )
 }
@@ -87,24 +106,33 @@ function StocksTable(props){
           <th>SD</th>
         </tr>
         {props.rows.map((row, index) => (
-          <StocksTableRow key={index} rowNumber={index + 1} />
+          <StocksTableRow 
+          key={index} 
+          rowNumber={index + 1}
+          handleTicker={props.handleTicker} 
+          />
         ))}
         <tr>
-          <PlusMinusRow onAdd={props.addRow} onRemove={props.removeRow}/>
+          <PlusMinusRow 
+          onAdd={props.addRow} 
+          onRemove={props.removeRow}
+          />
         </tr>
       </table>
     </div>
   )
 }
 
-function StocksTableRow({rowNumber}){
-  const tickerId = `ticker-${rowNumber}`
-  const returnId = `return-${rowNumber}`
-  const riskId = `risk-${rowNumber}`
+function StocksTableRow({rowNumber, handleTicker}){
+  const tickerId = `ticker-${rowNumber}`;
+  const returnId = `return-${rowNumber}`;
+  const riskId = `risk-${rowNumber}`;
 
   return(
     <tr>
-      <td><input className="width" type="text" id={tickerId}/></td>
+      <td>
+        <input className="width" type="text" id={tickerId} onChange={handleTicker}/>
+      </td>
       <td id={returnId}></td>
       <td id={riskId}></td>
     </tr>
@@ -121,9 +149,13 @@ function ContainerHeader(props){
 
 function PlusMinusRow({onAdd, onRemove}){
   return(
-    <td id="button-row" >
-      <input type="submit" className="add-row-button" value="+" onClick={onAdd}/>
-      <input type="submit" className="minus-row-button" value="-" onClick={onRemove}/>
+    <td id="button-row">
+      <button className="add-row-button" onClick={onAdd}>
+        +
+      </button>
+      <button className="minus-row-button" onClick={onRemove}>
+        -
+      </button>
     </td>
   )
 }
@@ -131,9 +163,9 @@ function PlusMinusRow({onAdd, onRemove}){
 function Button(props){
   return(
     <div className='button-container-1'>
-      <input 
-      className='submit-button' type = "Submit" 
-      value={props.buttonName}/>
+      <button className='submit-button' onClick={props.function}>
+        {props.buttonName}
+      </button>
     </div>
   )
 }
