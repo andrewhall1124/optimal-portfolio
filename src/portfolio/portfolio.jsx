@@ -26,16 +26,6 @@ function StatsContainer(){
     {id: newId, ticker: '',weight: ''}
   ])
 
-  //Sets first rows of stocks and weights table
-  // React.useEffect(() => {
-  //   if (stockRows.length === 0) {
-  //     setStockRows([{ id:'',ticker: "", return: "", risk: "" }]);
-  //   }
-  //   if (weightRows.length === 0) {
-  //     setWeightRows([{ticker: '', weightName: '',weight: ''}]);
-  //   }
-  // }, [stockRows, weightRows]);
-
   //Handle ticker input changes
   const handleTicker = (stockRowId, event) => {
     setStockRows(
@@ -49,11 +39,23 @@ function StatsContainer(){
     setWeightRows(
       weightRows.map((weightRow) => {
         if (weightRow.id === stockRowId) {
-        return { id: weightRow.id, ticker: event.target.value, return: '', risk: ''}
+        return { id: weightRow.id, ticker: event.target.value, weight: weightRow.weight,}
       }
       return weightRow;
     })
   );
+  };
+
+  //Handle weight input changes
+  const handleWeight = (weightRowId, event) => {
+    setWeightRows(
+      weightRows.map(weightRow => {
+        if (weightRow.id === weightRowId) {
+          return {id: weightRow.id, ticker: weightRow.ticker, weight: event.target.value}
+        }
+        return weightRow;
+      })
+    );
   };
 
   //add and subtract row functions
@@ -68,7 +70,6 @@ function StatsContainer(){
     let updatedWeightRows = weightRows.filter(weightRow => weightRow.id !== stockRowId);
     setWeightRows(updatedWeightRows);
   };
-
   
   const fetchData = () => {
     console.log(stockRows);
@@ -83,8 +84,9 @@ function StatsContainer(){
       fetchData={fetchData} handleTicker = {handleTicker}
       />
       <LowerStatsContainer
-      rows={weightRows} setRows = {setWeightRows}
+      weightRows={weightRows} setWeightRows = {setWeightRows}
       addRow={addRow} removeRow = {removeRow}
+      handleWeight={handleWeight}
       />
       <MessagesContainer/>
     </div>
@@ -177,7 +179,8 @@ function LowerStatsContainer(props){
   return(
     <div className='inner-stats-container'>
       <WeightsTable 
-      rows={props.rows} setRows = {props.setRows}
+      weightRows={props.weightRows} 
+      handleWeight={props.handleWeight}
       />
       <PortfolioTable/>
       <Button buttonName="Calculate"/>
@@ -189,29 +192,33 @@ function WeightsTable(props){
   return(
     <div className='weights-container'>
       <table id="weights-table">
-      <ContainerHeader 
-        tableWidth="2" 
-        tableName="Weights"
+        <ContainerHeader 
+          tableWidth="2" 
+          tableName="Weights"
         />
         <tr>
           <th>Ticker</th>
           <th>Weight</th>
         </tr>
-        {props.rows.map((row, index) => (
-          <WeightsTableRow key={index} rowNumber={index + 1} />
-        ))}      </table>
+        {props.weightRows.map(weightRow => (
+          <WeightsTableRow 
+          weightRow={weightRow} 
+          handleWeight={props.handleWeight}
+          />
+        ))}
+        </table>
     </div>
   )
 }
 
-function WeightsTableRow({rowNumber}){
-  const weightNameId = `weight-name-${rowNumber}`
-  const weightId = `weight-${rowNumber}`
+function WeightsTableRow(props){
 
   return(
     <tr>
-    <td id ={weightNameId}></td>
-    <td><input className="width" type="text" id={weightId} value=".3333"/></td>
+    <td>{props.weightRow.ticker}</td>
+    <td>
+      <input value={props.weightRow.weight} onChange={(event) => props.handleWeight(props.weightRow.id, event)}/>
+    </td>
   </tr> 
   )
 }
