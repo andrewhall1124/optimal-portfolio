@@ -1,7 +1,10 @@
 import React from 'react';
 import './portfolio.css';
 
-// const DATA_LENGTH = 36;
+const DATA_LENGTH = 36;
+const API_KEY = 'QGWOX5A1IGEY8FV7'; 
+const TIME_SERIES = "TIME_SERIES_MONTHLY";
+const ROUND = 4;
 
 function createId(){
   return Math.round(Math.random()*10000);
@@ -19,8 +22,9 @@ export function Portfolio(){
 function StatsContainer(){
   //declare stock and weight row arrays
   let newId = createId();
+
   const [stockRows, setStockRows] = React.useState([
-    {id: newId,ticker: '', return: '', risk: ''},
+    {id: newId,ticker: '', return: '', risk: '', monthlyCloseData: []},
   ]);
   const [weightRows, setWeightRows] = React.useState([
     {id: newId, ticker: '',weight: ''}
@@ -31,7 +35,7 @@ function StatsContainer(){
     setStockRows(
         stockRows.map((stockRow) => {
           if (stockRow.id === stockRowId) {
-          return { id: stockRow.id, ticker: event.target.value, return: '', risk: ''}
+          return { id: stockRow.id, ticker: event.target.value, return: '', risk: '', monthlyCloseData: []}
         }
         return stockRow;
       })
@@ -61,8 +65,9 @@ function StatsContainer(){
   //add and subtract row functions
   const addRow = () => {
     let newId = createId();
-    setStockRows([...stockRows, {id: newId, ticker: '', return: '', risk: ''}]);
+    setStockRows([...stockRows, {id: newId, ticker: '', return: '', risk: '', monthlyCloseData: []}]);
     setWeightRows([...weightRows, {id: newId, ticker: '',weight: ''}]);
+    console.log(stockRows);
   };
   const removeRow = (stockRowId) => {
     let updatedStockRows = stockRows.filter(stockRow => stockRow.id !== stockRowId);
@@ -71,9 +76,39 @@ function StatsContainer(){
     setWeightRows(updatedWeightRows);
   };
   
-  const fetchData = () => {
-    console.log(stockRows);
-    console.log(weightRows);
+  const fetchData = async () => {
+    const newStockRows = await Promise.all(stockRows.map(async (stockRow) => {
+      const tickerInput = stockRow.ticker;
+      const response = await fetch(`https://www.alphavantage.co/query?function=${TIME_SERIES}&symbol=${tickerInput}&apikey=${API_KEY}`);
+      const json = await response.json();
+      const monthlyData = json['Monthly Time Series'];
+      const closeData = [];
+      if(json['Note'] != 'Thank you for using Alpha Vantage! Our standard API call frequency is 5 calls per minute and 500 calls per day. Please visit https://www.alphavantage.co/premium/ if you would like to target a higher API call frequency.'){
+        for (let i = 0; i < DATA_LENGTH; i++){
+            closeData[i] = Number(Object.values(Object.values(monthlyData)[i])[3]);
+        }
+        closeData.reverse();
+      } else{
+        alert('You have reached the api limit. Please wait one minute before adding more stocks!');
+      }
+
+      //create an array with the average return of each month 
+      const returnData = [];
+      for (let i = 0; i < closeData.length; i++){
+        returnData[i] = (closeData[i] / closeData[i-1]) -1;
+      }
+      returnData[0] = 0;
+      
+      //find the average return of the last 5 years
+      const sum = returnData.reduce((accumulator, currentValue) => accumulator + currentValue);
+      const mean = (sum / returnData.length).toFixed(ROUND);
+
+      //calculate standard deviation of returns over the last 5 years
+      const variance = returnData.reduce((accumulator, currentValue) => accumulator + Math.pow(currentValue - mean, 2), 0) / closeData.length;
+      const standardDeviation = (Math.sqrt(variance)).toFixed(ROUND);
+      return { id: stockRow.id, ticker: stockRow.ticker, return: mean, risk: standardDeviation, monthlyCloseData: closeData, 'Monthly Return Data': returnData };
+    }));
+    setStockRows(newStockRows);
   };
 
   return(
