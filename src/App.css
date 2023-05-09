@@ -3,6 +3,8 @@
   --darkneongreen: rgb(0, 132, 0);
   --neonred: #ff5858;
   --darkneonred:#c20303; 
+  --myBackground: white;
+  --myMainColor: lightgray;
 
 }
 
@@ -14,8 +16,7 @@ body{
 
 header{
   height: 80px;
-  background: lightgray;
-  border-radius: 15px;
+  background: var(--myMainColor);
   display: flex;
   align-items: center;
 }
@@ -23,14 +24,14 @@ header{
 main{
   display: flex;
   justify-content: space-between;
+  gap: 8px;
   height: calc(100vh - 146px);
   flex-direction: row;
 }
 
 footer{
   height: 50px;
-  background: lightgray;
-  border-radius: 15px;
+  background: var(--myMainColor);
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -49,7 +50,6 @@ footer{
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 15px;;
 }
 
 .logo{

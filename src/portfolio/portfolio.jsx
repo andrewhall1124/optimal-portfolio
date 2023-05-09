@@ -1,5 +1,7 @@
 import React from 'react';
 import './portfolio.css';
+import { Line } from 'react-chartjs-2';
+import {Chart} from 'chart.js/auto';
 
 const DATA_LENGTH = 36;
 const API_KEY = 'QGWOX5A1IGEY8FV7'; 
@@ -14,7 +16,7 @@ export function Portfolio(){
   return(
     <main>
       <StatsContainer/>
-      <GraphContainer/>
+      <MetricsContainer/>
     </main>
   )
 }
@@ -112,34 +114,12 @@ function StatsContainer(){
   };
 
   return(
-    <div className='stats-container'>
-      <UpperStatsContainer 
-      stockRows={stockRows} setStockRows = {setStockRows}
-      addRow={addRow} removeRow = {removeRow}
-      fetchData={fetchData} handleTicker = {handleTicker}
-      />
-      <LowerStatsContainer
-      weightRows={weightRows} setWeightRows = {setWeightRows}
-      addRow={addRow} removeRow = {removeRow}
-      handleWeight={handleWeight}
-      />
-      <MessagesContainer/>
-    </div>
-  )
-}
-
-function UpperStatsContainer(props){
-
-  return(
-    <div className='inner-stats-container'>
+    <div className='stocks-container'>
+      <div className='stats-container-header'>Stocks</div>
       <StocksTable 
-      stockRows={props.stockRows} setStockRows={props.setStockRows}
-      addRow={props.addRow} removeRow = {props.removeRow}
-      handleTicker={props.handleTicker}
-      />
-      <Button 
-      buttonName = "Fetch"
-      function={props.fetchData}
+      stockRows={stockRows} setStockRows={setStockRows}
+      addRow={addRow} removeRow = {removeRow}
+      handleTicker={handleTicker}
       />
     </div>
   )
@@ -148,16 +128,13 @@ function UpperStatsContainer(props){
 function StocksTable(props){
 
   return(
-    <div className='stocks-container'>
+    <div className='stocks-table-container'>
       <table id="stocks-table">
-        <ContainerHeader 
-        tableWidth="4" 
-        tableName="Stocks"
-        />
         <tr>
           <th>Ticker</th>
           <th>Er</th>
           <th>SD</th>
+          <th>Weight</th>
         </tr>
         {props.stockRows.map(stockRow => (
           <StocksTableRow 
@@ -167,11 +144,15 @@ function StocksTable(props){
           />
         ))}
         <tr>
-          <td colSpan={'4'}>
+          <td colSpan={'5'}>
             <button className='plus-button' onClick={props.addRow}>+</button>
           </td>
         </tr>
       </table>
+      <Button 
+      buttonName = "Fetch"
+      function={props.fetchData}
+      />
     </div>
   )
 }
@@ -186,23 +167,19 @@ function StocksTableRow(props){
       <td>{props.stockRow.return}</td>
       <td>{props.stockRow.risk}</td>
       <td>
+        <input value={props.stockRow.weight} onChange={(event) => props.handleWeight(props.weightRow.id, event)}/>
+      </td>
+      <td>
         <button className='minus-button' onClick={() => props.removeRow(props.stockRow.id)}>-</button>
       </td>
     </tr>
   )
 }
 
-function ContainerHeader(props){
-  return(
-    <tr>
-      <th colSpan={props.tableWidth}>{props.tableName}</th>
-    </tr>
-  )
-}
 
 function Button(props){
   return(
-    <div className='button-container-1'>
+    <div className='button-container'>
       <button className='submit-button' onClick={props.function}>
         {props.buttonName}
       </button>
@@ -210,93 +187,61 @@ function Button(props){
   )
 }
 
-function LowerStatsContainer(props){
+function MetricsContainer(){
+
   return(
-    <div className='inner-stats-container'>
-      <WeightsTable 
-      weightRows={props.weightRows} 
-      handleWeight={props.handleWeight}
-      />
-      <PortfolioTable/>
-      <Button buttonName="Calculate"/>
+    <div className='metrics-container'>
+      <GraphContainer/>
+      <PortfolioContainer/>
     </div>
   )
 }
 
-function WeightsTable(props){
-  return(
-    <div className='weights-container'>
-      <table id="weights-table">
-        <ContainerHeader 
-          tableWidth="2" 
-          tableName="Weights"
-        />
-        <tr>
-          <th>Ticker</th>
-          <th>Weight</th>
-        </tr>
-        {props.weightRows.map(weightRow => (
-          <WeightsTableRow 
-          weightRow={weightRow} 
-          handleWeight={props.handleWeight}
-          />
-        ))}
-        </table>
-    </div>
-  )
-}
-
-function WeightsTableRow(props){
-
-  return(
-    <tr>
-    <td>{props.weightRow.ticker}</td>
-    <td>
-      <input value={props.weightRow.weight} onChange={(event) => props.handleWeight(props.weightRow.id, event)}/>
-    </td>
-  </tr> 
-  )
-}
-
-function PortfolioTable(){
-  return(
-    <div className='portfolio-container'>
-      <table>
-        <ContainerHeader
-          tableWidth="2"
-          tableName="Portfolio"
-        />
-        <tr>
-          <td>Er</td>
-          <td id="portfolio-return"></td>
-        </tr>
-        <tr>
-          <td>SD</td>
-          <td id="portfolio-risk"></td>
-        </tr>
-        <tr>
-          <td>Sharpe</td>
-          <td id="portfolio-sharpe"></td>
-        </tr>
-      </table>
-    </div>
-  )
-}
-
-function MessagesContainer(){
-  return(
-    <div className="messages-container">
-    <div className="message-header">Messages</div>
-      <span className="user-name"></span>
-      <div id="messages"></div>
-    </div>
-  )
-}
 
 function GraphContainer(){
   return(
     <div className = "graph-container">
-      <div className="graph">A graph will go here for the react deliverable</div>
+      <Charts/>
+    </div>
+  )
+}
+
+const data = {
+  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  datasets: [
+    {
+      label: 'My First Dataset',
+      data: [65, 59, 80, 81, 56, 55, 40],
+    },
+  ],
+};
+
+export function Charts(){
+  return(
+    <div className='chart-container'>
+      <Line data={data} />
+    </div>
+  )
+}
+
+function PortfolioContainer(){
+  return(
+    <div className='portfolio-container'>
+      <div className='portfolio-container-header'>Portfolio</div>
+      <table className='portfolio-table'>
+        <tr>
+          <th>Er</th>
+          <th>SD</th>
+          <th>Sharpe</th>
+          <th>Alpha</th>
+        </tr>
+        <tr>
+          <td>xx</td>
+          <td>xx</td>
+          <td>xx</td>
+          <td>xx</td>
+        </tr>
+      </table>
     </div>
   )
 }
