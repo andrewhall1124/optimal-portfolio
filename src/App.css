@@ -5,7 +5,9 @@
   --darkneonred:#c20303; 
   --myBackground: white;
   --myMainColor: lightgray;
-
+  --myBorderRadius: 15px;
+  --myBoxShadow: 0px 0px  7px rgb(50, 50, 50);
+  --mySpacing: 8px;
 }
 
 body{
@@ -24,8 +26,8 @@ header{
 main{
   display: flex;
   justify-content: space-between;
-  gap: 8px;
-  height: calc(100vh - 146px);
+  gap: var(--mySpacing);
+  height: calc(100vh - 130px - (.5 * var(--mySpacing)));
   flex-direction: row;
 }
 
@@ -38,8 +40,8 @@ footer{
 }
 
 .nav-bar{
-  margin: 8px;
-  height: calc(30px - 16px);
+  margin: var(--mySpacing);
+  height: calc(30px - (2 * var(--mySpacing)));
   display: flex;
   align-items: center;
   gap: 16px;
@@ -69,7 +71,7 @@ footer{
   align-items: center;
   justify-content: flex-end;
   gap: 16px;
-  margin: 8px;
+  margin: var(--mySpacing);
 }
 
 .footer-element{

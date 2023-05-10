@@ -85,7 +85,7 @@ function StatsContainer(){
       const json = await response.json();
       const monthlyData = json['Monthly Time Series'];
       const closeData = [];
-      if(json['Note'] != 'Thank you for using Alpha Vantage! Our standard API call frequency is 5 calls per minute and 500 calls per day. Please visit https://www.alphavantage.co/premium/ if you would like to target a higher API call frequency.'){
+      if(json['Note'] !== 'Thank you for using Alpha Vantage! Our standard API call frequency is 5 calls per minute and 500 calls per day. Please visit https://www.alphavantage.co/premium/ if you would like to target a higher API call frequency.'){
         for (let i = 0; i < DATA_LENGTH; i++){
             closeData[i] = Number(Object.values(Object.values(monthlyData)[i])[3]);
         }
@@ -115,7 +115,7 @@ function StatsContainer(){
 
   return(
     <div className='stocks-container'>
-      <div className='stats-container-header'>Stocks</div>
+      <div className='container-header'>Stocks</div>
       <StocksTable 
       stockRows={stockRows} setStockRows={setStockRows}
       addRow={addRow} removeRow = {removeRow}
@@ -227,7 +227,7 @@ export function Charts(){
 function PortfolioContainer(){
   return(
     <div className='portfolio-container'>
-      <div className='portfolio-container-header'>Portfolio</div>
+      <div className='container-header'>Portfolio</div>
       <table className='portfolio-table'>
         <tr>
           <th>Er</th>
